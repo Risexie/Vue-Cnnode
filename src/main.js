@@ -3,8 +3,18 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import iView from 'iView';
+import BootstrapVue from 'bootstrap-vue'
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'iview/dist/styles/iview.css';
 
-Vue.config.productionTip = false
+
+Vue.use(BootstrapVue);
+Vue.use(iView);
+
+Vue.config.productionTip = true
 
 /* eslint-disable no-new */
 new Vue({
