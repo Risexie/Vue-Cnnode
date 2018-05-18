@@ -5,16 +5,17 @@
      <b-row>
       <b-col md="9"> 
         <b-list-group class="listGroup">
-     <b-list-group-item variant="secondary" class="Navbar">
-         <router-link to="/" class="linkactive"  >全部</router-link>
-         <router-link to="/GoodContent" class="link">精华</router-link>
-         <router-link to="/ShareContent" class="link">分享</router-link>
-         <router-link to="/AskContent" class="link">问答</router-link>
-         <router-link to="/JobContent" class="link">招聘</router-link>
-         <router-link to="/TestContent" class="link">客户端测试</router-link>
-     </b-list-group-item>
-    </b-list-group>
+          <b-list-group-item variant="secondary" class="Navbar">
+            <router-link to="/" class="linkactive"  >全部</router-link>
+            <router-link to="/GoodContent" class="link">精华</router-link>
+            <router-link to="/ShareContent" class="link">分享</router-link>
+            <router-link to="/AskContent" class="link">问答</router-link>
+            <router-link to="/JobContent" class="link">招聘</router-link>
+            <router-link to="/TestContent" class="link">客户端测试</router-link>
+          </b-list-group-item>
+        </b-list-group>
         <ContentList></ContentList>
+       
       </b-col>
       <b-col md="3" id="SideNav">
         <GithubLogin></GithubLogin>
@@ -24,6 +25,8 @@
       </b-col>
      </b-row>
 </b-container>
+ <Footer></Footer>
+        
 </div>
 
 </template>
@@ -35,6 +38,7 @@ import SideBarAds from "./SideBarAds";
 import ClientPicture from "./ClientPicture";
 import GithubLogin from "./GithubLogin";
 import ContentList from "./ContentList";
+import Footer from "./Footer";
 
 export default {
   name: "HelloWorld",
@@ -44,7 +48,8 @@ export default {
     SideBarAds,
     FriendlyLink,
     GithubLogin,
-    ContentList
+    ContentList,
+    Footer,
   },
   
 };
@@ -52,9 +57,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.listGroup .item {
-  font-size: 16px;
-  padding: 10px 0 10px 0;
+.listGroup{
+  padding-top:15px;
 }
 .listGroup .Navbar .link {
   padding: 10px 5px 5px 3px;

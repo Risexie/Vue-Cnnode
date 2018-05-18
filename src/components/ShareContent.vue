@@ -52,6 +52,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.listGroup {
+  padding-top:15px;
+}
 .listGroup .item {
   font-size: 16px;
   padding: 10px 0 10px 0;
