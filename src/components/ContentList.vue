@@ -11,8 +11,7 @@
          <b-img v-bind:src="item.author.avatar_url" fluid alt="Responsive image" class="img"></b-img>
          {{ item.reply_count }}/{{ item.visit_count }}   {{ item.title }}
     </b-list-group-item>
-    <b-pagination size="md" :total-rows="1000" v-model="currentPage" :per-page="25">
-    </b-pagination>
+     <b-pagination-nav @click="select('switchPage')" :number-of-pages="100" v-model="currentPage" />
  </div>
 </template>
 
@@ -25,11 +24,11 @@ export default {
       posts: [],
       activeItem: "all",
       tab: "all",
-      currentPage: 1
+      currentPage: 1,
     };
   },
-  beforeCreate() {
-    var vm = this;
+  created() {
+    var vm = this
     axios
       .get("https://cnodejs.org/api/v1/topics")
       .then(function(response) {
@@ -63,23 +62,23 @@ export default {
     select(type) {
       this.activeItem = type;
     },
-    
-    /*Switch page */
-    page(currentPage) {
-      var vm = this;
+
+     /*Switch page */
+    switchPage(currentPage,tab) {
+      var vm = this
       axios
-        .get("https://cnodejs.org/api/v1/topics" + "?tab=" + tab)
+        .get("https://cnodejs.org/api/v1/topics" + "?page=" + currentPage + '&tab=' + tab)
         .then(function(response) {
           return response.data.data;
         })
         .then(function(data) {
-          vm.posts = data;
+        vm.posts = data;
         })
         .catch(function(err) {
           alert(err);
         });
     }
-  }
+  },
 };
 </script>
 
