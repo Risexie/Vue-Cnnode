@@ -4,18 +4,7 @@
   <b-container>
      <b-row>
       <b-col md="9"> 
-        <b-list-group class="listGroup">
-          <b-list-group-item variant="secondary" class="Navbar">
-            <router-link to="/" class="linkactive"  >全部</router-link>
-            <router-link to="/GoodContent" class="link">精华</router-link>
-            <router-link to="/ShareContent" class="link">分享</router-link>
-            <router-link to="/AskContent" class="link">问答</router-link>
-            <router-link to="/JobContent" class="link">招聘</router-link>
-            <router-link to="/TestContent" class="link">客户端测试</router-link>
-          </b-list-group-item>
-        </b-list-group>
         <ContentList></ContentList>
-       
       </b-col>
       <b-col md="3" id="SideNav">
         <GithubLogin></GithubLogin>
