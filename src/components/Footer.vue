@@ -35,8 +35,6 @@ export default {
   font-size:13px;
   line-height:2em;
 }
-.footer .img {
 
-}
 </style>
 

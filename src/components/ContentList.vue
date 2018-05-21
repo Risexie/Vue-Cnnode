@@ -9,7 +9,7 @@
    </b-list-group-item>
      <b-list-group-item v-for="item in posts" v-bind:key="item.id" class="item">
          <b-img v-bind:src="item.author.avatar_url" fluid alt="Responsive image" class="img"></b-img>
-         {{ item.reply_count }}/{{ item.visit_count }}   {{ item.title }}
+         {{ item.reply_count }}/{{ item.visit_count }} <router-link :to="{ name:'Post',params:{ id:item.id }}">{{ item.title }}</router-link>
     </b-list-group-item>
      <b-pagination-nav @click="select('switchPage')" :number-of-pages="100" v-model="currentPage" />
  </div>
@@ -29,6 +29,7 @@ export default {
   },
   created() {
     var vm = this
+    
     axios
       .get("https://cnodejs.org/api/v1/topics")
       .then(function(response) {
@@ -77,7 +78,7 @@ export default {
         .catch(function(err) {
           alert(err);
         });
-    }
+    },
   },
 };
 </script>

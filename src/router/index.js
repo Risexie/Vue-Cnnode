@@ -4,11 +4,17 @@ import FirstPage from '@/components/FirstPage'
 import GetStart from '@/components/GetStart'
 import About from '@/components/About'
 import SignIn from '@/components/SignIn'
+import Post from '@/components/Post'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/post/:id',
+      name: 'Post',
+      component: Post
+    },
     {
       path: '/',
       name: 'FirstPage',
@@ -29,9 +35,6 @@ export default new Router({
       name: 'SignIn',
       component: SignIn
     },
-    
-  
-  
-    
+   
   ]
 });
