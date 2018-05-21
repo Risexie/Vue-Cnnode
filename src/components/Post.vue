@@ -16,26 +16,29 @@
         <b-list-group class="replay">
           <b-list-group-item variatn="dark"> {{ post.reply_count}} 回复</b-list-group-item>
             <b-list-group-item  v-for="item in post.replies" v-bind:key="item.id" class="item">
-                <b-img v-bind:src="item.author.avatar_url" ></b-img> {{ item.author.loginname}} {{ item.create_at}}
+                <b-img v-bind:src="item.author.avatar_url"  ></b-img> {{ item.author.loginname}} {{ item.create_at}}
                 <p v-html="item.content"></p>
             </b-list-group-item>
         </b-list-group>
       </b-col>
       <!-- 右侧作者信息 -->
   
-      <b-col md ="3">
-      <b-card header="作者">
-         <b-img :src="authorMessage.avatar_url">{{ authorMessage.loginname }}</b-img>
+      <b-col md ="3" class="author">
+      <b-card header="作者" >
+         <b-img :src="authorMessage.avatar_url" fluid alt="Responsive image"></b-img>
+         {{ authorMessage.loginname }} 
          <p>积分： {{ authorMessage.score}}</p>
       </b-card>
-      <b-card header="作者的其他话题" v-for="item in authorMessage" v-bind:key="item.id">
-         <router-link :to="{ path:'post',query:{id:item.recent_topics.id}}"></router-link>
+      <b-card header="作者的其他话题">
+        <div v-for="item in authorMessage.recent_topics" v-bind:key="item.id">
+         <router-link :to="{name:'Post', params:{ id:item.id} }">{{ item.title}}</router-link>
+         </div>
        </b-card>
       </b-col>
     </b-row>
 </b-container>
 
-<Footer></Footer>
+<Footer></Footer> 
 </div>
 </template>
 <script>
@@ -45,13 +48,12 @@ import Footer from "./Footer";
 import router from "../router";
 
 export default {
-  
   name: "Post",
   data() {
     return {
       post: [],
-      authorName:'',
-      authorMessage:[],
+      authorName: "",
+      authorMessage: []
     };
   },
   components: {
@@ -59,45 +61,50 @@ export default {
     Footer
   },
   methods: {
-    fetchPostData(){    
-    axios
-      .get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
-      .then(function(response) {  
-        if(response.success == "true"){
-          console.log("fetch dada success")
-        return response.data.data;
-        }else {
-          throw new Error('failed to fetch dada')
-        }
-      })
-      .then(function(data) {
-        this.post = data;
-        this.authorName = data.author.loginname;
-      })
-      .catch(function(err) {
-        alert(err);
-      });
-    },
-     fetchAuthorData() {
-    axios
-      .get("https://cnodejs.org/api/v1/user/"+ this.authorName)
-      .then(function(response) {
-        if(response.success == "true"){
-          console.log("fetch AuthorData success")
+    fetchPostData() {
+      axios
+        .get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
+        .then(function(response) {
+          if (response.data.success) {
+            console.log("fetch dada success");
             return response.data.data;
-        }else {
-          throw new Error('failed to fetch Author data')
-        }
-      })
-      .then(function(data) {
-        vm.authorMessage = data;
-    });
+          } else {
+            throw new Error("failed to fetch dada");
+          }
+        })
+        .then(data => {
+          this.post = data;
+          this.authorName = data.author.loginname;
+        })
+        .catch(function(err) {
+          alert(err);
+        });
+    },
+    fetchAuthorData() {
+      axios
+        .get("https://cnodejs.org/api/v1/user/" + this.authorName)
+        .then(function(response) {
+          if (response.data.success) {
+            console.log("fetch AuthorData success");
+            return response.data.data;
+          } else {
+            throw new Error("failed to fetch Author data");
+          }
+        })
+        .then(data => {
+          this.authorMessage = data;
+        });
+    }
   },
-  },
-  mounted(){
+  mounted() {
     this.fetchPostData();
+  },
+  watch: {
+    authorName: "fetchAuthorData",
+    $route(to, from) {
+      this.fetchData();
+    }
   }
-   
 };
 </script>
 <style  scoped>
@@ -113,6 +120,13 @@ export default {
 .replay img {
   width: 30px;
   height: 30px;
+}
+.author img {
+  width: 48px;
+  height:48px;
+}
+.author{
+  padding-top:15px;
 }
 </style>
 
