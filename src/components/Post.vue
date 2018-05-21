@@ -31,7 +31,9 @@
       </b-card>
       <b-card header="作者的其他话题">
         <div v-for="item in authorMessage.recent_topics" v-bind:key="item.id">
-         <router-link :to="{name:'Post', params:{ id:item.id} }">{{ item.title}}</router-link>
+          <p>
+         <router-link :to="{ name:'Post',params:{ id:item.id }}">{{ item.title }}</router-link>
+         </p>
          </div>
        </b-card>
       </b-col>
@@ -102,8 +104,8 @@ export default {
   watch: {
     authorName: "fetchAuthorData",
     $route(to, from) {
-      this.fetchData();
-    }
+      this.fetchPostData();
+    },
   }
 };
 </script>
