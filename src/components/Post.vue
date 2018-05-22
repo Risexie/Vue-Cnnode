@@ -1,6 +1,5 @@
 <template>
 <div>
-<Header></Header>
 <b-container>
     <b-row>
       <!-- 左侧文章信息 -->
@@ -39,14 +38,11 @@
       </b-col>
     </b-row>
 </b-container>
-
-<Footer></Footer> 
 </div>
 </template>
 <script>
 import axios from "axios";
-import Header from "./Header";
-import Footer from "./Footer";
+
 import router from "../router";
 
 export default {
@@ -59,8 +55,7 @@ export default {
     };
   },
   components: {
-    Header,
-    Footer
+
   },
   methods: {
     fetchPostData() {

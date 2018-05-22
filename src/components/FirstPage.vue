@@ -1,6 +1,5 @@
 <template>
 <div>
-  <Header></Header>
   <b-container>
      <b-row>
       <b-col md="9"> 
@@ -14,14 +13,13 @@
       </b-col>
      </b-row>
 </b-container>
- <Footer></Footer>
         
 </div>
 
 </template>
 
 <script>
-import Header from "./Header";
+
 import FriendlyLink from "./FriendlyLink";
 import SideBarAds from "./SideBarAds";
 import ClientPicture from "./ClientPicture";
@@ -32,13 +30,12 @@ import Footer from "./Footer";
 export default {
   name: "HelloWorld",
   components: {
-    Header,
+
     ClientPicture,
     SideBarAds,
     FriendlyLink,
     GithubLogin,
     ContentList,
-    Footer,
   },
   
 };
