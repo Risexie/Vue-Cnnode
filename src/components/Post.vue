@@ -8,7 +8,7 @@
         <b-list-group class="topic">
           <b-list-group-item>
           <h1>{{ post.title}}</h1>
-        <p>发布于{{ post.create_at}} 作者 {{ post.author}},{{ post.visit_count}} 次浏览</p>
+        <p>发布于{{ post.create_at}} 作者 {{ post.author.loginname}},{{ post.visit_count}} 次浏览</p>
         <br>
         <p v-html="post.content"></p>
         </b-list-group-item>
@@ -26,7 +26,7 @@
       <b-col md ="3" class="author">
       <b-card header="作者" >
          <b-img :src="authorMessage.avatar_url" fluid alt="Responsive image"></b-img>
-         {{ authorMessage.loginname }} 
+         <router-link :to="{ name:'Author',params:{ id:authorMessage.loginname}}">{{ authorMessage.loginname }}</router-link>
          <p>积分： {{ authorMessage.score}}</p>
       </b-card>
       <b-card header="作者的其他话题">

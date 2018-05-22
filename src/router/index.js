@@ -5,13 +5,14 @@ import GetStart from '@/components/GetStart'
 import About from '@/components/About'
 import SignIn from '@/components/SignIn'
 import Post from '@/components/Post'
+import Author from '@/components/Author'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/post/:id',
+      path: '/Post/:id',
       name: 'Post',
       component: Post
     },
@@ -34,6 +35,11 @@ export default new Router({
       path: '/SignIn',
       name: 'SignIn',
       component: SignIn
+    },
+    {
+      path: '/Author/:id',
+      name: 'Author',
+      component: Author
     },
    
   ]
