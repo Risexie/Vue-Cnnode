@@ -1,4 +1,5 @@
 <template>
+<div class="footer">
 <b-container>
   <b-row>
     <b-col md="9" class="footer">
@@ -15,26 +16,27 @@
    </b-col>
   </b-row>
 </b-container>
+</div>
 </template>
 <script>
 export default {
   name: "Footer",
   data() {
-    return {
-
-    };
+    return {};
   }
 };
 </script>
 <style scoped>
- .footer {
-   padding-top:30px;
- }
- .footerAd {
-  color:#ababab;
-  font-size:13px;
-  line-height:2em;
+.footer {
+  padding-top: 30px;
 }
-
+.footerAd {
+  color: #ababab;
+  font-size: 13px;
+  line-height: 2em;
+}
+footer{
+  background-color: white;
+}
 </style>
 

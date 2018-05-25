@@ -1,17 +1,36 @@
 <template>
  <div class="listGroup">
-   <b-list-group-item>
+   <b-list-group-item  variant="secondary" class="nav">
    <b-link :class="{'active':activeItem === 'all'}" @click="select('all');cut('all')">全部</b-link>
    <b-link :class="{'active':activeItem === 'good'}" @click="select('good');cut('good')">精华</b-link>
    <b-link :class="{'active':activeItem === 'share'}" @click="select('share');cut('share')">分享</b-link>
    <b-link :class="{'active':activeItem === 'ask'}" @click="select('ask');cut('ask')">问答</b-link>
    <b-link :class="{'active':activeItem === 'job'}" @click="select('job');cut('job')">招聘</b-link>
    </b-list-group-item>
-     <b-list-group-item v-for="item in posts" v-bind:key="item.id" class="item">
-         <b-img v-bind:src="item.author.avatar_url" fluid alt="Responsive image" class="img"></b-img>
-         {{ item.reply_count }}/{{ item.visit_count }} <router-link :to="{ name:'Post',params:{ id:item.id }}">{{ item.title }}</router-link>
+     <b-list-group-item v-for="item in posts" v-bind:key="item.id" class="item" href="#" >
+          <b-form-row>
+            <b-col  sm="1" md="1" lg="1">
+         <router-link :to="{ name:'Author',params:{id:item.author.loginname}}"><b-img v-bind:src="item.author.avatar_url" fluid alt="Responsive image" class="img"></b-img></router-link>
+            </b-col>
+            <b-col  sm="1" md="1" lg="1">
+          <p>{{ item.reply_count }}/ {{ item.visit_count }} </p>
+            </b-col>
+               <b-col sm="1" md="1" lg="1">
+            <div class="tab">
+          <p v-if="item.top" class="tabTop">置顶</p>
+          <p v-else-if="item.good" class="tabTop">精华</p>
+          <p v-else-if="item.tab === 'share'">分享</p>
+          <p v-else-if="item.tab === 'ask'">问答</p>
+          <p v-else>招聘</p>
+          </div>
+          </b-col>
+            <b-col  sm="9" md="9" lg="9">
+          <router-link :to="{ name:'Post',params:{ id:item.id }}">{{ item.title }}</router-link>
+            </b-col>
+          </b-form-row>
     </b-list-group-item>
-     <b-pagination-nav @click="select('switchPage')" :number-of-pages="100" v-model="currentPage" />
+    <b-pagination size="sm" :total-rows="100" v-model="currentPage" :per-page="10">
+    </b-pagination>
  </div>
 </template>
 
@@ -24,19 +43,17 @@ export default {
       posts: [],
       activeItem: "all",
       tab: "all",
-      currentPage: 1,
+      currentPage: 1
     };
   },
   created() {
-    var vm = this
-    
     axios
       .get("https://cnodejs.org/api/v1/topics")
       .then(function(response) {
         return response.data.data;
       })
-      .then(function(data) {
-        vm.posts = data;
+      .then(data => {
+        this.posts = data;
       })
       .catch(function(err) {
         alert(err);
@@ -45,66 +62,82 @@ export default {
   methods: {
     /* Switch tab */
     cut(tab) {
-      var vm = this;
       axios
         .get("https://cnodejs.org/api/v1/topics" + "?tab=" + tab)
         .then(function(response) {
           return response.data.data;
         })
-        .then(function(data) {
-          vm.posts = data;
+        .then(data => {
+          this.posts = data;
         })
-        .catch(function(err) {
+        .catch(err => {
           alert(err);
         });
     },
-
     /* Swtich Active item */
     select(type) {
       this.activeItem = type;
     },
-
-     /*Switch page */
-    switchPage(currentPage,tab) {
-      var vm = this
-      axios
-        .get("https://cnodejs.org/api/v1/topics" + "?page=" + currentPage + '&tab=' + tab)
+  },
+  watch:{
+      /*Switch page */
+     currentPage:function() {
+       axios
+        .get(
+          "https://cnodejs.org/api/v1/topics" +"?page=" + this.currentPage +"&tab=" + this.tab)
         .then(function(response) {
           return response.data.data;
         })
-        .then(function(data) {
-        vm.posts = data;
+        .then(data => {
+          this.posts = data;
+          console.log("change page success")
         })
         .catch(function(err) {
           alert(err);
-        });
-    },
-  },
-};
+        })
+      }
+},
+
+
+}
 </script>
 
 <style scoped>
-.listGroup .item {
+.listGroup .item a {
   font-size: 16px;
   padding: 10px 0 10px 0;
+  color: #888;
 }
 .listGroup .item .img {
   height: 30px;
   width: 30px;
+  border-radius: 10%;
 }
-.listGroup .link {
-  padding: 5px 10px 5px 10px;
-  color: #80bd01;
-  margin: 0 10px;
+.listGroup .nav a {
+  padding: 5px 7px 5px 7px;
+  color: white;
   font-size: 16px;
   font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma,
     "Hiragino Sans GB";
 }
-.listGroup .active {
+.active {
   background-color: #80bd01;
-  color: white;
   padding: 3px;
   border-radius: 15%;
   font-size: 14px;
+}
+.tab {
+  color:#999;
+  padding:2px 3px 2px 3px;
+  background-color: #e5e5e5;
+  border-radius: 10%;
+  text-align:center;
+}
+.tabTop {
+  color:white;
+  padding:2px 3px 2px 3px;
+  background-color:#80bd01;
+  border-radius: 10%;
+  
 }
 </style>

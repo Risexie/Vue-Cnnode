@@ -2,10 +2,10 @@
 <div>
   <b-container>
      <b-row>
-      <b-col md="9"> 
+      <b-col  sm="12" md="12" lg="9" xl="9"> 
         <ContentList></ContentList>
       </b-col>
-      <b-col md="3" id="SideNav">
+      <b-col   lg="3" xl="3" id="SideNav">
         <GithubLogin></GithubLogin>
         <SideBarAds></SideBarAds>
         <FriendlyLink></FriendlyLink>

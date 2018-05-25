@@ -9,14 +9,14 @@
           <h1>{{ post.title}}</h1>
         <p>发布于{{ post.create_at}} 作者 {{ post.author.loginname}},{{ post.visit_count}} 次浏览</p>
         <br>
-        <p v-html="post.content"></p>
+        <p v-html="post.content" class="vhtml"></p>
         </b-list-group-item>
         </b-list-group>
         <b-list-group class="replay">
           <b-list-group-item variatn="dark"> {{ post.reply_count}} 回复</b-list-group-item>
             <b-list-group-item  v-for="item in post.replies" v-bind:key="item.id" class="item">
                 <b-img v-bind:src="item.author.avatar_url"  ></b-img> {{ item.author.loginname}} {{ item.create_at}}
-                <p v-html="item.content"></p>
+                <p v-html="item.content" class="vhtml"></p>
             </b-list-group-item>
         </b-list-group>
       </b-col>
@@ -53,9 +53,6 @@ export default {
       authorName: "",
       authorMessage: []
     };
-  },
-  components: {
-
   },
   methods: {
     fetchPostData() {
@@ -124,6 +121,16 @@ export default {
 }
 .author{
   padding-top:15px;
+}
+.vhtml >>> img{
+  width: 100%;
+  height: 100%;
+  
+}
+.vhtml >>> p{
+  font-size: 15px;
+  line-height: 2em;
+  overflow: auto;
 }
 </style>
 
