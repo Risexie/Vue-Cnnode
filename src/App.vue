@@ -2,7 +2,9 @@
   <div id="app">
     <Header></Header>
     <router-view/>
+    <div class="footer">
     <Footer></Footer>
+    </div>
   </div>
 </template>
 
@@ -20,5 +22,8 @@ export default {
 <style>
 body {
   background-color:#e1e1e1;
+}
+.footer{
+  padding-top:20px;
 }
 </style>

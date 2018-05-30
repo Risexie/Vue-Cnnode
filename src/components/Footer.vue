@@ -2,7 +2,7 @@
 <div class="footer">
 <b-container>
   <b-row>
-    <b-col md="9" class="footer">
+    <b-col md="9">
    <b-link href="">Rss|</b-link><b-link href="https://github.com/cnodejs/nodeclub/">源码地址</b-link>
    <div class="footerAd">
    <p>CNode 社区为国内最专业的 Node.js 开源技术社区，致力于 Node.js 的技术研究。</p>
@@ -27,16 +27,14 @@ export default {
 };
 </script>
 <style scoped>
-.footer {
-  padding-top: 30px;
-}
 .footerAd {
   color: #ababab;
   font-size: 13px;
   line-height: 2em;
 }
-footer{
+.footer{
   background-color: white;
+  padding-top:15px;
 }
 </style>
 
