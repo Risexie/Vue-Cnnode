@@ -4,6 +4,7 @@ import FirstPage from '@/components/FirstPage'
 import Post from '@/components/Post'
 import Author from '@/components/Author'
 import UserCollect from '@/components/UserCollect'
+import UserMessage from '@/components/UserMessage'
 
 Vue.use(Router)
 
@@ -29,6 +30,10 @@ export default new Router({
       name: 'UserCollect',
       component: UserCollect
     },
-   
+    {
+      path: '/UserMessage/:id',
+      name: 'UserMessage',
+      component: UserMessage
+    },
   ]
 });

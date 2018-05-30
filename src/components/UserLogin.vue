@@ -4,7 +4,7 @@
       <b-nav-item>注册</b-nav-item>
     </b-navbar-nav>  
     <b-navbar-nav class="UserNav" v-if="userMessage.success">
-      <b-nav-item ><router-link :to="{name:'UserMessage'}"><p>未读信息</p></router-link></b-nav-item>
+      <b-nav-item ><router-link :to="{name:'UserMessage',params:{id:accessToken}}"><p>未读信息</p></router-link></b-nav-item>
       <b-nav-item ><router-link :to="{name:'UserCollect',params:{id:userMessage.loginname}}"><p>我的收藏</p></router-link></b-nav-item>
       <b-nav-item ><router-link :to="{name:'Author',params:{id:userMessage.loginname}}"><b-img v-bind:src="userMessage.avatar_url"></b-img></router-link></b-nav-item>
     </b-navbar-nav>
@@ -15,7 +15,6 @@
 </template>
 <script>
 import axios from "axios";
-import UserCollect from './UserCollect'
 
 export default {
   name: "Userlogin",
@@ -24,9 +23,6 @@ export default {
       accessToken: "",
       userMessage: []
     };
-  },
-  components:{
-    UserCollect,
   },
   methods: {
     handleRender() {

@@ -19,8 +19,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #ClientPicture {
-  height: 100%;
-  width: 100%;
   margin-top: 10px;
 }
 </style>
