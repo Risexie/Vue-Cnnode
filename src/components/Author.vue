@@ -21,7 +21,6 @@
                     <b-img v-bind:src="item.author.avatar_url" fluid alt="Responsive image"></b-img>
                      <router-link :to="{name:'Post',params:{id:item.id}}">{{ item.title}}</router-link>
                 </b-list-group-item>
-
             </b-list-group>
             </b-col>
         </b-row>

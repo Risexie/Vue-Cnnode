@@ -29,7 +29,7 @@
             </b-col>
           </b-form-row>
     </b-list-group-item>
-    <b-pagination size="sm" :total-rows="100" v-model="currentPage" :per-page="10">
+    <b-pagination size="sm" :total-rows="1000" v-model="currentPage" :per-page="10">
     </b-pagination>
  </div>
 </template>
@@ -81,7 +81,7 @@ export default {
   },
   watch:{
       /*Switch page */
-     currentPage:function() {
+    currentPage:function() {
        axios
         .get(
           "https://cnodejs.org/api/v1/topics" +"?page=" + this.currentPage +"&tab=" + this.tab)
@@ -97,8 +97,6 @@ export default {
         })
       }
 },
-
-
 }
 </script>
 

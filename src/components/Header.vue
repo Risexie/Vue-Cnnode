@@ -31,8 +31,5 @@ export default {
 img {
   height:41px;
 }
-#link {
-  font-size: 20px;
-  color: #ccc;
-}
+
 </style>

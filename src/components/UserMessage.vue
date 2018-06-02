@@ -7,7 +7,8 @@
           <router-link :to="{name:'Author',params:{id:item.author.loginname}}"><b-img v-bind:src="item.author.avatar_url"></b-img></router-link>
       </b-col>
       <b-col sm="11" md="11" lg="11">   
-          {{ item.author.loginname}} reply from <router-link :to="{ name:'Post',params:{id:item.topic.id}}">{{ item.topic.title }}</router-link>
+          <h4>{{ item.author.loginname}}</h4> 
+          reply from <router-link :to="{ name:'Post',params:{id:item.topic.id}}">{{ item.topic.title }}</router-link>
           <p v-html="item.reply.content"></p>
       </b-col>
     </b-form-row> 

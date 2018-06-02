@@ -5,7 +5,6 @@
         <ContentList></ContentList>
       </b-col>
       <b-col   lg="3" xl="3" id="SideNav">
-        <GithubLogin></GithubLogin>
         <SideBarAds></SideBarAds>
         <FriendlyLink></FriendlyLink>
         <ClientPicture></ClientPicture>
@@ -18,7 +17,6 @@
 import FriendlyLink from "./FriendlyLink";
 import SideBarAds from "./SideBarAds";
 import ClientPicture from "./ClientPicture";
-import GithubLogin from "./GithubLogin";
 import ContentList from "./ContentList";
 
 export default {
@@ -27,7 +25,6 @@ export default {
     ClientPicture,
     SideBarAds,
     FriendlyLink,
-    GithubLogin,
     ContentList,
   },
   
