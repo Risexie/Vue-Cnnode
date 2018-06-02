@@ -3,11 +3,12 @@
     <b-navbar-nav class="ml-auto" id="link">
       <b-nav-item>注册</b-nav-item>
     </b-navbar-nav>  
-    <b-navbar-nav class="UserNav" v-if="userStatus">
-      <b-nav-item ><router-link :to="{name:'UserMessage',params:{id:accessToken}}"><p>未读信息</p></router-link></b-nav-item>
+    <b-navbar-nav class="UserNav" v-if="LoginStatus">
+      <b-nav-item ><router-link :to="{name:'UserMessage'}"><p>未读信息</p></router-link></b-nav-item>
       <b-nav-item ><router-link :to="{name:'UserCollect',params:{id:userMessage.loginname}}"><p>我的收藏</p></router-link></b-nav-item>
-      <b-nav-item ><router-link :to="{name:'Author',params:{id:userMessage.loginname}}"><b-img v-bind:src="userMessage.avatar_url"></b-img></router-link></b-nav-item>
-      <b-nav-item @click="handleLogOut" >退出</b-nav-item>
+      <b-nav-item ><router-link :to="{name:'Create'}"><p>发表文章</p></router-link></b-nav-item>
+      <b-nav-item ><router-link :to="{name:'Author',params:{id:userMessage.loginname}}"><b-img v-bind:src="userMessage.avatar_url"></b-img></router-link></b-nav-item>     
+      <b-nav-item @click="handleLogOut"><p>退出</p></b-nav-item>
     </b-navbar-nav>
     <b-navbar-nav v-else>
     <b-nav-item @click="handleRender" >登录</b-nav-item>
@@ -17,19 +18,20 @@
 </template>
 <script>
 import axios from "axios";
+
 export default {
   name: "Userlogin",
   data() {
     return {
       accessToken: "",
       userMessage: [],
-      userStatus: false
+      LoginStatus: false
     };
   },
   methods: {
     isLoginin() {
-      if (sessionStorage.getItem("userStatus")) {
-        this.userStatus = sessionStorage.getItem("userStatus");
+      if (sessionStorage.getItem("LoginStatus")) {
+        this.userStatus = sessionStorage.getItem("LoginStatus");
         this.accessToken = sessionStorage.getItem("accessToken");
       axios
         .post(
@@ -51,7 +53,7 @@ export default {
     },
     handleLogOut() {
       sessionStorage.clear();
-      this.userStatus = false;
+      this.LoginStatus = false;
     },
     handleRender() {
       this.$Modal.confirm({
@@ -81,8 +83,8 @@ export default {
             .then(data => {
               if (data.success) {
                 this.userMessage = data
-                this.userStatus = true
-                sessionStorage.setItem("userStatus", this.userStatus);
+                this.LoginStatus = true
+                sessionStorage.setItem("LoginStatus", this.LoginStatus);
                 sessionStorage.setItem("accessToken", this.accessToken);
                 this.$Message.success({
                   render: h => {
@@ -100,8 +102,8 @@ export default {
             });
         }
       });
-    }
-  },
+      }
+    },
   mounted() {
     this.isLoginin();
   }
@@ -114,7 +116,10 @@ export default {
 }
 .UserNav p {
   color: rgba(255, 255, 255, 0.5);
-  padding: 3px 0px 0px 0px;
+  padding: 2px 0px 0px 0px;
+}
+.UserNav :hover{
+  color:rgba(255, 255, 255, 0.75);
 }
 .UserNav a {
   font-size: 14px;

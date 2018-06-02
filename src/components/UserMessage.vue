@@ -36,14 +36,16 @@ export default {
     return {
       messages: [],
       UserMessage: [],
+      accessToken:'',
     };
   },
   methods: {
     fetchMessageData() {
+      this.accessToken = sessionStorage.getItem("accessToken");
       axios
         .get(
           "https://cnodejs.org/api/v1/messages/?accesstoken=" +
-            this.$route.params.id
+            this.accessToken
         )
         .then(function(response) {
           return response.data.data;
@@ -65,8 +67,6 @@ export default {
 .hasnot_read_messages img{
 width:40px;
 
-}
-.has_read_messages {
 }
 </style>
 
