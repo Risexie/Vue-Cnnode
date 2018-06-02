@@ -23,19 +23,34 @@ export default {
     return {
       accessToken: "",
       userMessage: [],
-      userStatus:false,
+      userStatus: false
     };
   },
   methods: {
-    isLoginin(){
-      if(sessionStorage.getItem('userStatus')){
-        this.userStatus = sessionStorage.getItem('userStatus')
-        this.userMessage = sessionStorage.getItem('userMessage')
+    isLoginin() {
+      if (sessionStorage.getItem("userStatus")) {
+        this.userStatus = sessionStorage.getItem("userStatus");
+        this.accessToken = sessionStorage.getItem("accessToken");
+      axios
+        .post(
+          "https://cnodejs.org/api/v1/accesstoken/?accesstoken=" +
+            this.accessToken
+        )
+        .then(function(response) {
+          return response.data;
+        })
+        .then(data => {
+          if (data.success) {
+            this.userMessage = data;
+          }
+        })
+        .catch(err => {
+          alert(err);
+        });
       }
     },
-    handleLogOut(){
-      sessionStorage.removeItem('userMessage');
-      sessionStorage.removeItem('userStatus');
+    handleLogOut() {
+      sessionStorage.clear();
       this.userStatus = false;
     },
     handleRender() {
@@ -65,10 +80,10 @@ export default {
             })
             .then(data => {
               if (data.success) {
-                this.userMessage = data;
-                this.userStatus = true,
-                sessionStorage.setItem('userMessage',this.userMessage)
-                sessionStorage.setItem('status',this.userStatus)
+                this.userMessage = data
+                this.userStatus = true
+                sessionStorage.setItem("userStatus", this.userStatus);
+                sessionStorage.setItem("accessToken", this.accessToken);
                 this.$Message.success({
                   render: h => {
                     return h("div", ["登录成功"]);
@@ -87,26 +102,25 @@ export default {
       });
     }
   },
-  mounted(){
+  mounted() {
     this.isLoginin();
-  },
+  }
 };
 </script>
 <style scoped>
-.UserNav img{
-height:25px;
-width:25px;
+.UserNav img {
+  height: 25px;
+  width: 25px;
 }
-.UserNav p{
-  color:rgba(255, 255, 255, 0.5);
-  padding:3px 0px 0px 0px;
+.UserNav p {
+  color: rgba(255, 255, 255, 0.5);
+  padding: 3px 0px 0px 0px;
 }
-.UserNav a{
+.UserNav a {
   font-size: 14px;
 }
-.nav_collapse a{
-  font-size:14px; 
-  
+.nav_collapse a {
+  font-size: 14px;
 }
 </style>
 
