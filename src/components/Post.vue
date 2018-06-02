@@ -6,7 +6,7 @@
       <b-col md="9">
         <b-list-group class="topic">
           <b-list-group-item>
-          <h1>{{ post.title}}</h1>
+          <h1>{{ post.title}}</h1><div v-if="sessionStorage.getItem('author_id')"></div>
         <p>发布于{{ post.create_at}} 作者 {{ post.author.loginname}},{{ post.visit_count}} 次浏览</p>
         <br>
         <p v-html="post.content" class="vhtml"></p>

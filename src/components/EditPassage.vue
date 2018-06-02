@@ -16,22 +16,22 @@
                       <Input v-model="createTitle" placeholder="标题字数10字以上" style="width: 785px"></Input>
                       <Input v-model="createContent" type="textarea" :rows="20" placeholder="文章内容"></Input>
                 </b-list-group-item>
-                <b-list-group-item> <Button  @click="CreatePassage" type="primary">发表文章</Button></b-list-group-item>
+                <b-list-group-item> <Button  @click="EditPassage" type="primary">编辑文章</Button></b-list-group-item>
             </b-list-group>
         </b-col>
     </b-row>
 </b-container>
+    
 </template>
 <script>
-import axios from "axios";
-
 export default {
-  name: "Create",
+  name: "EditPassage",
   data() {
     return {
       createTitle: "",
       createContent: "",
       accessToken: "",
+      passageId:"",
       cityList: [
         {
           value: "ask",
@@ -48,52 +48,52 @@ export default {
         {
           value: "dev",
           label: "dev"
-        },
+        }
       ],
       tab: ""
     };
   },
   methods: {
-      CreatePassage(){
-          this.accessToken = sessionStorage.getItem('accessToken')
-          axios.post("https://cnodejs.org/api/v1/topics/?tab=" + this.tab + "&accesstoken=" + this.accessToken +"&title=" + this.createTitle + "&content=" + this.createContent)
-          .then(function(response){
-              return data = response.data
-          })
-          .then(data => {
-              if(data.success){
-                this.$Message.success("发表成功");
-              }
-          })
-          .catch(err =>{
-              this.$Message.error("发布失败")
+    fetchPassage() {
+        this.accessToken = sessionStorage.getItem('accessToken')
+      axios
+        .get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
+        .then(function(response) {
+          return (data = response.data);
         })
-      },
-      fetchPassage(){
-          if(this.$route.params.id){
-            axiox.get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
-            .then(function(response){
-                return data = response.data
-            })
-            .then(data=>{
-                if(data.success){
-                    this.createTitle = data.title;
-                    this.createContent = data.content;
-                }
-            })
-            .catch(err=>{
-                alert(err);
-            })
-            
+        .then(data => {
+          if (data.success) {
+            this.createTitle = data.title;
+            this.createContent = data.content;
+            this.passageId = data.id
           }
-      }
+        })
+        .catch(err => {
+          alert(err);
+        });
+    },
+    EditPassage() {
+      axios
+      .post("https://cnodejs.org/api/v1/topics/update/?tab=" + this.tab + "&accesstoken=" + this.accessToken +"&title=" + this.createTitle + "&content=" + this.createContent+ "&topic_id=" + this.passageId)
+        .then(function(response) {
+          return (data = response.data);
+        })
+        .then(data => {
+          if (data.success) {
+              this.$Message.success("编辑成功");
+          }
+        })
+        .catch(err => {
+          this.$Message.error("编辑失败");
+        });
+    }
   },
-  mounted(){
-      this.fetchPassage();
+  mounted() {
+    this.fetchPassage();
   }
 };
 </script>
-<style scoped>
+<style>
 </style>
 
 
