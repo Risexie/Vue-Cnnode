@@ -13,8 +13,8 @@
                         <Option value="dev">Dev(测试板块)</Option>
                      </Select>
                     </p>
-                      <Input v-model="createTitle" placeholder="标题字数10字以上" style="width: 785px"></Input>
-                      <Input v-model="createContent" type="textarea" :rows="20" placeholder="文章内容"></Input>
+                      <Input   v-model="createTitle" placeholder="标题字数10字以上" style="width: 783px"></Input>
+                      <Input   v-model="createContent" type="textarea" :rows="20" placeholder="文章内容"></Input>
                 </b-list-group-item>
                 <b-list-group-item> <Button  @click="EditPassage" type="primary">编辑文章</Button></b-list-group-item>
             </b-list-group>
@@ -24,7 +24,10 @@
     
 </template>
 <script>
+import axios from "axios";
+
 export default {
+
   name: "EditPassage",
   data() {
     return {
@@ -59,16 +62,18 @@ export default {
       axios
         .get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
         .then(function(response) {
-          return (data = response.data);
-        })
-        .then(data => {
-          if (data.success) {
-            this.createTitle = data.title;
-            this.createContent = data.content;
-            this.passageId = data.id
+          if (response.data.success) {
+            console.log("fetch dada success");
+            return response.data.data;
+          } else {
+            throw new Error("failed to fetch dada");
           }
         })
-        .catch(err => {
+        .then(data => {
+          this.createTitle= data.title
+          this.createContent = data.content;
+        })
+        .catch(function(err) {
           alert(err);
         });
     },
@@ -84,7 +89,7 @@ export default {
           }
         })
         .catch(err => {
-          this.$Message.error("编辑失败");
+          this.$Message.error(err.message);
         });
     }
   },

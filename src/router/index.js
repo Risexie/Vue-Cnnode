@@ -6,6 +6,7 @@ import Author from '@/components/Author'
 import UserCollect from '@/components/UserCollect'
 import UserMessage from '@/components/UserMessage'
 import Create from '@/components/Create'
+import EditPassage from '@/components/EditPassage'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/Create',
       name: 'Create',
       component: Create
+    },
+    {
+      path: '/EditPassage/:id',
+      name: 'EditPassage',
+      component: EditPassage
     },
   ]
 });

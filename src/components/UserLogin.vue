@@ -31,7 +31,7 @@ export default {
   methods: {
     isLoginin() {
       if (sessionStorage.getItem("LoginStatus")) {
-        this.userStatus = sessionStorage.getItem("LoginStatus");
+        this.LoginStatus = sessionStorage.getItem("LoginStatus");
         this.accessToken = sessionStorage.getItem("accessToken");
       axios
         .post(
@@ -86,6 +86,7 @@ export default {
                 this.LoginStatus = true
                 sessionStorage.setItem("LoginStatus", this.LoginStatus);
                 sessionStorage.setItem("accessToken", this.accessToken);
+                sessionStorage.setItem("authorId",this.userMessage.id)
                 this.$Message.success({
                   render: h => {
                     return h("div", ["登录成功"]);

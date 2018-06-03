@@ -6,7 +6,7 @@
       <b-col md="9">
         <b-list-group class="topic">
           <b-list-group-item>
-          <h1>{{ post.title}}</h1><div v-if="sessionStorage.getItem('author_id')"></div>
+          <h1>{{ post.title}}</h1><router-link :to="{name:'EditPassage',params:{id:post.id}}" class="EditLink"><b-button variant="primary">编辑文章</b-button></router-link>
         <p>发布于{{ post.create_at}} 作者 {{ post.author.loginname}},{{ post.visit_count}} 次浏览</p>
         <br>
         <p v-html="post.content" class="vhtml"></p>
@@ -58,8 +58,8 @@
 </template>
 <script>
 import axios from "axios";
-
 import router from "../router";
+
 
 export default {
   name: "Post",
@@ -67,11 +67,13 @@ export default {
     return {
       post: [],
       authorName: "",
-      authorMessage: []
+      authorMessage: [],
+      author_id:'',
     };
   },
   methods: {
     fetchPostData() {
+      this.author_id = sessionStorage.getItem('author_id')
       axios
         .get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
         .then(function(response) {
@@ -156,6 +158,9 @@ export default {
   font-size: 15px;
   line-height: 2em;
   overflow: auto;
+}
+.EditLink {
+float: right;
 }
 </style>
 

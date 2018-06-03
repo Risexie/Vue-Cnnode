@@ -69,31 +69,10 @@ export default {
               this.$Message.error("发布失败")
         })
       },
-      fetchPassage(){
-          if(this.$route.params.id){
-            axiox.get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
-            .then(function(response){
-                return data = response.data
-            })
-            .then(data=>{
-                if(data.success){
-                    this.createTitle = data.title;
-                    this.createContent = data.content;
-                }
-            })
-            .catch(err=>{
-                alert(err);
-            })
-            
-          }
-      }
+      
   },
-  mounted(){
-      this.fetchPassage();
-  }
 };
 </script>
 <style scoped>
 </style>
-
 
