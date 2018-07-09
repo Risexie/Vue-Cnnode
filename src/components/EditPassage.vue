@@ -1,7 +1,7 @@
 <template>
 <b-container>
     <b-row>
-        <b-col md="9" lg="9" xg="9">
+      <b-col md="9" lg="9" xg="9">
             <b-list-group>
                 <b-list-group-item variant="dark"><h1>发表主题</h1></b-list-group-item>
                 <b-list-group-item>
@@ -14,11 +14,35 @@
                      </Select>
                     </p>
                       <Input   v-model="createTitle" placeholder="标题字数10字以上" style="width: 783px"></Input>
-                      <Input   v-model="createContent" type="textarea" :rows="20" placeholder="文章内容"></Input>
+                      <Input   v-model="createContent" type="textarea" :rows="20" placeholder="文章内容" style="width: 783px"></Input>
                 </b-list-group-item>
-                <b-list-group-item> <Button  @click="EditPassage" type="primary">编辑文章</Button></b-list-group-item>
+                <b-list-group-item> <Button  @click="EditPassage" type="primary">提交</Button></b-list-group-item>
             </b-list-group>
-        </b-col>
+      </b-col>
+      <!-- 右侧作者信息 -->
+
+      <b-col md ="3" class="author">
+      <b-card header="作者" >
+        <b-form-row>
+          <b-col sm="4" md="4" lg="4"> 
+         <router-link :to="{ name:'Author',params:{id:authorMessage.loginname}}"><b-img :src="authorMessage.avatar_url" fluid alt="Responsive image"></b-img></router-link>
+          </b-col>
+          <b-col sm="8" md="8" lg="8">
+         <router-link :to="{ name:'Author',params:{id:authorMessage.loginname}}">{{ authorMessage.loginname }}</router-link>
+         <p>积分： {{ authorMessage.score}}</p>
+          </b-col>
+        </b-form-row>
+      </b-card>
+      <div class="otherTopic">
+      <b-card header="作者的其他话题" >
+        <div v-for="item in authorMessage.recent_topics" :key="item.id">
+          <p>
+         <router-link :to="{ name:'Post',params:{ id:item.id }}" style="font-size:14px;line-height:30px">{{ shortTitle(item.title) }} </router-link>
+         </p>
+         </div>
+       </b-card>
+      </div>
+      </b-col>
     </b-row>
 </b-container>
     
@@ -27,14 +51,15 @@
 import axios from "axios";
 
 export default {
-
   name: "EditPassage",
-  data() {
+  data :function() {
     return {
-      createTitle: "",
-      createContent: "",
-      accessToken: "",
-      passageId:"",
+      createTitle: '',
+      createContent: '',
+      accessToken: '',
+      authorMessage: [],
+      tab: "",
+      
       cityList: [
         {
           value: "ask",
@@ -53,48 +78,86 @@ export default {
           label: "dev"
         }
       ],
-      tab: ""
     };
   },
   methods: {
     fetchPassage() {
-        this.accessToken = sessionStorage.getItem('accessToken')
+      //读取store数据
+      this.accessToken = this.$store.state.accessToken;
       axios
         .get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
         .then(function(response) {
           if (response.data.success) {
-            console.log("fetch dada success");
+            console.log("fetch data success");
             return response.data.data;
           } else {
             throw new Error("failed to fetch dada");
           }
         })
         .then(data => {
-          this.createTitle= data.title
+          this.createTitle = data.title;
           this.createContent = data.content;
         })
         .catch(function(err) {
           alert(err);
         });
     },
+    fetchAuthorData() {
+      axios
+        .get("https://cnodejs.org/api/v1/user/" + this.$store.state.loginName)
+        .then(function(response) {
+          if (response.data.success) {
+            console.log("fetch AuthorData success");
+            return response.data.data;
+          } else {
+            this.$Message.error("无法读取数据");
+          }
+        })
+        .then(data => {
+          this.authorMessage = data;
+        })
+        .catch(err => {
+          this.$Message.error("读取数据出错");
+        });
+    },
     EditPassage() {
       axios
-      .post("https://cnodejs.org/api/v1/topics/update/?tab=" + this.tab + "&accesstoken=" + this.accessToken +"&title=" + this.createTitle + "&content=" + this.createContent+ "&topic_id=" + this.passageId)
+        .post(
+          "https://cnodejs.org/api/v1/topics/update/?tab=" +
+            this.tab +
+            "&accesstoken=" +
+            this.accessToken +
+            "&title=" +
+            this.createTitle +
+            "&content=" +
+            this.createContent +
+            "&topic_id=" +
+            this.$route.params.id
+        )
         .then(function(response) {
-          return (data = response.data);
+          return data = response.data;
         })
         .then(data => {
           if (data.success) {
-              this.$Message.success("编辑成功");
+            this.$Message.success("编辑成功");
           }
         })
         .catch(err => {
           this.$Message.error(err.message);
         });
+    },
+    shortTitle(title) {
+      if (title.length > 16) {
+        var shortTitle = title.slice(0, 16) + "....";
+        return shortTitle;
+      } else {
+        return title;
+      }
     }
   },
   mounted() {
     this.fetchPassage();
+    this.fetchAuthorData();
   }
 };
 </script>

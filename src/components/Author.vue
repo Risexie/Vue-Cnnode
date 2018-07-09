@@ -4,22 +4,22 @@
         <b-row>
             <b-col md="9">
              <b-card header="个人主页" class="user">
-               <b-img v-bind:src="authorMessage.avatar_url" fluid alt="Responsive image"></b-img> {{ authorMessage.loginame}}
+               <b-img :src="authorMessage.avatar_url" fluid alt="Responsive image"></b-img> {{ authorMessage.loginame }}
                <p>{{ authorMessage.score}}积分</p>
-               <b-link href="https://github.com/">@ {{ authorMessage.githubUsername }}</b-link>
+               <b-link :href="authorGithubLink"> @{{ authorMessage.githubUsername }}</b-link>
             </b-card>
             <b-list-group class="lastedtopic" >
             <b-list-group-item  variant="light">最近创建的话题</b-list-group-item>
-                <b-list-group-item v-for="item in authorMessage.recent_topics" v-bind:key="item.id">
-                <b-img v-bind:src="item.author.avatar_url" fluid alt="Responsive image"></b-img>
-                <router-link :to="{name:'Post',params:{id:item.id}}">{{ item.title}}</router-link>
+                <b-list-group-item v-for="item in authorMessage.recent_topics" :key="item.id">
+                <b-img :src="item.author.avatar_url" fluid alt="Responsive image"></b-img>
+                <router-link :to="{name:'Post',params:{id:item.id}}">{{ item.title }}</router-link>
                  </b-list-group-item>
             </b-list-group>
             <b-list-group class="lastedreplay">
                 <b-list-group-item variant="light">最近参与的话题</b-list-group-item>
-                <b-list-group-item v-for="item in authorMessage.recent_replies" v-bind:key="item.id">
-                    <b-img v-bind:src="item.author.avatar_url" fluid alt="Responsive image"></b-img>
-                     <router-link :to="{name:'Post',params:{id:item.id}}">{{ item.title}}</router-link>
+                <b-list-group-item v-for="item in authorMessage.recent_replies" :key="item.id">
+                    <b-img :src="item.author.avatar_url" fluid alt="Responsive image"></b-img>
+                     <router-link :to="{name:'Post',params:{id:item.id}}">{{ item.title }}</router-link>
                 </b-list-group-item>
             </b-list-group>
             </b-col>
@@ -33,9 +33,9 @@ import axios from "axios";
 
 export default {
   name: "Author",
-  data() {
+  data: function() {
     return {
-      authorMessage: []
+      authorMessage: [],
     };
   },
   methods: {
@@ -55,6 +55,12 @@ export default {
         });
     }
   },
+  computed: {
+    authorGithubLink: function() {
+      let link = "https://github.com/" + this.$route.params.id;
+      return link;
+    }
+  },
   mounted() {
     this.fetchUserData();
   }
@@ -66,7 +72,7 @@ export default {
   width: 40px;
 }
 .lastedtopic {
-    padding-top:15px;
+  padding-top: 15px;
 }
 .lastedtopic img {
   height: 30px;
@@ -74,7 +80,7 @@ export default {
 }
 
 .lastedreplay {
-  padding-top:15px;
+  padding-top: 15px;
 }
 .lastedreplay img {
   height: 30px;

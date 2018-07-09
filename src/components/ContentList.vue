@@ -7,13 +7,13 @@
    <b-link :class="{'active':activeItem === 'ask'}" @click="select('ask');cut('ask')">问答</b-link>
    <b-link :class="{'active':activeItem === 'job'}" @click="select('job');cut('job')">招聘</b-link>
    </b-list-group-item>
-     <b-list-group-item v-for="item in posts" v-bind:key="item.id" class="item" href="#" >
+     <b-list-group-item v-for="item in posts" :key="item.id" class="item" href="#" >
           <b-form-row>
             <b-col  sm="1" md="1" lg="1">
-         <router-link :to="{ name:'Author',params:{id:item.author.loginname}}"><b-img v-bind:src="item.author.avatar_url" fluid alt="Responsive image" class="img"></b-img></router-link>
+         <router-link :to="{ name:'Author',params:{id:item.author.loginname}}"><b-img :src="item.author.avatar_url" fluid alt="Responsive image" class="img"></b-img></router-link>
             </b-col>
             <b-col  sm="1" md="1" lg="1">
-          <p>{{ item.reply_count }}/ {{ item.visit_count }} </p>
+          <p>{{ item.reply_count }} / {{ item.visit_count }} </p>
             </b-col>
                <b-col sm="1" md="1" lg="1">
             <div class="tab">
@@ -25,7 +25,7 @@
           </div>
           </b-col>
             <b-col  sm="9" md="9" lg="9">
-          <router-link :to="{ name:'Post',params:{ id:item.id }}">{{ item.title }}</router-link>
+          <router-link :to="{ name:'Post',params:{ id:item.id }}">{{ shortTitle(item.title) }}</router-link>
             </b-col>
           </b-form-row>
     </b-list-group-item>
@@ -41,22 +41,22 @@ export default {
   data() {
     return {
       posts: [],
-      activeItem: "all",
       tab: "all",
+      activeItem: "all",
       currentPage: 1
     };
   },
   created() {
     axios
       .get("https://cnodejs.org/api/v1/topics")
-      .then(function(response) {
+      .then(response => {
         return response.data.data;
       })
       .then(data => {
         this.posts = data;
       })
-      .catch(function(err) {
-        alert(err);
+      .catch(err => {
+        this.$Message.error('无法读取数据');
       });
   },
   methods: {
@@ -64,40 +64,52 @@ export default {
     cut(tab) {
       axios
         .get("https://cnodejs.org/api/v1/topics" + "?tab=" + tab)
-        .then(function(response) {
+        .then(response =>{
           return response.data.data;
         })
         .then(data => {
           this.posts = data;
         })
         .catch(err => {
-          alert(err);
+          this.$Message.error('无法读取数据');
         });
     },
     /* Swtich Active item */
     select(type) {
       this.activeItem = type;
     },
+    shortTitle(title){
+      if(title.length > 40){
+        var shortTitle = title.slice(0,40) + '....'
+        return shortTitle
+      }else {
+        return title
+      }
+    }
   },
-  watch:{
-      /*Switch page */
-    currentPage:function() {
-       axios
+  watch: {
+    /*Switch page */
+    currentPage: function() {
+      axios
         .get(
-          "https://cnodejs.org/api/v1/topics" +"?page=" + this.currentPage +"&tab=" + this.tab)
-        .then(function(response) {
+          "https://cnodejs.org/api/v1/topics" +
+            "?page=" +
+            this.currentPage +
+            "&tab=" +
+            this.tab
+        )
+        .then(response => {
           return response.data.data;
         })
         .then(data => {
           this.posts = data;
-          console.log("change page success")
         })
-        .catch(function(err) {
-          alert(err);
-        })
-      }
-},
-}
+        .catch(err => {
+          this.$Message.error('无法读取数据');
+        });
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -125,17 +137,16 @@ export default {
   font-size: 14px;
 }
 .tab {
-  color:#999;
-  padding:2px 3px 2px 3px;
+  color: #999;
+  padding: 2px 3px 2px 3px;
   background-color: #e5e5e5;
   border-radius: 10%;
-  text-align:center;
+  text-align: center;
 }
 .tabTop {
-  color:white;
-  padding:2px 3px 2px 3px;
-  background-color:#80bd01;
+  color: white;
+  padding: 2px 3px 2px 3px;
+  background-color: #80bd01;
   border-radius: 10%;
-  
 }
 </style>

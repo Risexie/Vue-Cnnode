@@ -2,10 +2,10 @@
   <div id="topic">
     <b-card header="友情社区"
         header-tag="header">
-      <b-link href="https://ruby-china.org/"><b-img src="//o4j806krb.qnssl.com/public/images/ruby-china-20150529.png" fluid alt="Responsive image"></b-img></b-link>
-      <b-link href="http://golangtc.com/"><b-img src="//o4j806krb.qnssl.com/public/images/golangtc-logo.png" fluid alt="Responsive image"></b-img></b-link>
-      <b-link href="http://phphub.org/"><b-img src="//o4j806krb.qnssl.com/public/images/phphub-logo.png" fluid alt="Responsive image"></b-img></b-link>
-      <b-link href="https://testerhome.com/"><b-img src="//dn-cnode.qbox.me/FjLUc7IJ2--DqS706etPQ1EGajxK" fluid alt="Responsive image"></b-img></b-link>
+      <b-link :href="rubyChina"><b-img :src="rubyChinaImg" fluid alt="Responsive image"></b-img></b-link>
+      <b-link :href="goLang"><b-img :src="goLangImg" fluid alt="Responsive image"></b-img></b-link>
+      <b-link :href="phpHub"><b-img :src="phpHubImg" fluid alt="Responsive image"></b-img></b-link>
+      <b-link :href="testerHome"><b-img :src="testerHomeImg" fluid alt="Responsive image"></b-img></b-link>
     </b-card>
   </div>
 </template>
@@ -13,7 +13,18 @@
 export default {
   name: "FriendlyLink",
   data() {
-    return {};
+    return {
+      //href
+      rubyChina:"https://ruby-china.org/",
+      goLang:"http://golangtc.com/",
+      phpHub:"http://phphub.org/",
+      testerHome:"https://testerhome.com/",
+      //img
+      rubyChinaImg:"//o4j806krb.qnssl.com/public/images/ruby-china-20150529.png",
+      goLangImg:"//o4j806krb.qnssl.com/public/images/golangtc-logo.png",
+      phpHubImg:"//o4j806krb.qnssl.com/public/images/phphub-logo.png",
+      testerHomeImg:"//dn-cnode.qbox.me/FjLUc7IJ2--DqS706etPQ1EGajxK",
+    };
   }
 };
 </script>

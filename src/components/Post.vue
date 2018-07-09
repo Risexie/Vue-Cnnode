@@ -5,23 +5,23 @@
       <!-- 左侧文章信息 -->
       <b-col md="9">
         <b-list-group class="topic">
-          <b-list-group-item>
-          <h1>{{ post.title}}</h1><router-link :to="{name:'EditPassage',params:{id:post.id}}" class="EditLink"><b-button variant="primary">编辑文章</b-button></router-link>
-        <p>发布于{{ post.create_at}} 作者 {{ post.author.loginname}},{{ post.visit_count}} 次浏览</p>
+          <b-list-group-item> 
+          <h1>{{ post.title}}</h1><router-link :to="{name:'EditPassage',params:{id:post.id}}" class="EditLink" v-if="authorName == loginName"><b-button variant="primary">编辑文章</b-button></router-link>
+        <p>发布于 {{ timeagoInstance(post.create_at) }}   作者  {{ post.author.loginname}} ,  {{ post.visit_count}} 次浏览</p>
         <br>
         <p v-html="post.content" class="vhtml"></p>
         </b-list-group-item>
         </b-list-group>
         <b-list-group class="replay">
           <b-list-group-item variatn="dark"> {{ post.reply_count}} 回复</b-list-group-item>
-            <b-list-group-item  v-for="(item ,index) in post.replies" v-bind:key="item.id" class="item">
+            <b-list-group-item  v-for="(item,index) in post.replies" :key="item.id" class="item">
               <b-form-row>
                 <b-col sm='1' md="1" lg="1">
-                <router-link :to="{name:'Author',params:{id:item.author.loginname}}"><b-img v-bind:src="item.author.avatar_url"></b-img>
+                <router-link :to="{name:'Author',params:{id:item.author.loginname}}"><b-img :src="item.author.avatar_url"></b-img>
                 </router-link>
                 </b-col>
                 <b-col  sm='11' md='11' lg="11"> 
-                <router-link :to="{name:'Author',params:{id:item.author.loginname}}" class="name">{{ item.author.loginname}}</router-link>  {{ index }} 楼·{{ item.create_at}}
+                <router-link :to="{name:'Author',params:{id:item.author.loginname}}" class="name">{{ item.author.loginname}}</router-link>  {{ index + 1 }} 楼·  {{ timeagoInstance(item.create_at) }}
                 <p v-html="item.content" class="vhtml"></p>
                 </b-col>
               </b-form-row>
@@ -44,9 +44,9 @@
       </b-card>
       <div class="otherTopic">
       <b-card header="作者的其他话题" >
-        <div v-for="item in authorMessage.recent_topics" v-bind:key="item.id">
+        <div v-for="item in authorMessage.recent_topics" :key="item.id">
           <p>
-         <router-link :to="{ name:'Post',params:{ id:item.id }}">{{ item.title }}</router-link>
+         <router-link :to="{ name:'Post',params:{ id:item.id }}" style="font-size:14px;line-height:30px">{{ shortTitle(item.title) }} </router-link>
          </p>
          </div>
        </b-card>
@@ -59,21 +59,22 @@
 <script>
 import axios from "axios";
 import router from "../router";
+import timeago from "timeago.js";
 
+var timeagoInstance = new timeago();
 
 export default {
   name: "Post",
-  data() {
+  data: function() {
     return {
       post: [],
       authorName: "",
       authorMessage: [],
-      author_id:'',
+      loginName:'',
     };
   },
   methods: {
     fetchPostData() {
-      this.author_id = sessionStorage.getItem('author_id')
       axios
         .get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
         .then(function(response) {
@@ -81,7 +82,7 @@ export default {
             console.log("fetch dada success");
             return response.data.data;
           } else {
-            throw new Error("failed to fetch dada");
+            this.$Message.error("无法读取数据");
           }
         })
         .then(data => {
@@ -89,7 +90,7 @@ export default {
           this.authorName = data.author.loginname;
         })
         .catch(function(err) {
-          alert(err);
+          this.$Message.error("读取数据出错");
         });
     },
     fetchAuthorData() {
@@ -100,22 +101,44 @@ export default {
             console.log("fetch AuthorData success");
             return response.data.data;
           } else {
-            throw new Error("failed to fetch Author data");
+            this.$Message.error("无法读取数据");
           }
         })
         .then(data => {
           this.authorMessage = data;
+        })
+        .catch(err => {
+          this.$Message.error("读取数据出错");
         });
+    },
+    timeagoInstance(time) {
+      var timeago_instance = new timeago();
+      return timeago_instance.format(time, "zh_CN");
+      
+    },
+    shortTitle(title){
+      if(title.length > 16){
+        var shortTitle = title.slice(0,16) + '....'
+        return shortTitle
+      }else {
+        return title
+      }
+    },
+    getAuthorName(){
+      this.loginName = this.$store.state.loginName;
     }
+    
   },
   mounted() {
     this.fetchPostData();
+    this.getAuthorName();
   },
+
   watch: {
     authorName: "fetchAuthorData",
     $route(to, from) {
       this.fetchPostData();
-    },
+    }
   }
 };
 </script>
@@ -134,33 +157,32 @@ export default {
   height: 30px;
 }
 .replay .name {
-  color:#666;
+  color: #666;
 }
 .author img {
   width: 48px;
-  height:48px;
+  height: 48px;
 }
-.author{
-  padding-top:15px;
+.author {
+  padding-top: 15px;
 }
-.otherTopic{
-  padding-top:15px;
+.otherTopic {
+  padding-top: 15px;
 }
-.otherTopic a{
-  color:#666
+.otherTopic a {
+  color: #666;
 }
-.vhtml >>> img{
+.vhtml >>> img {
   width: 100%;
   height: 100%;
-  
 }
-.vhtml >>> p{
+.vhtml >>> p {
   font-size: 15px;
   line-height: 2em;
   overflow: auto;
 }
 .EditLink {
-float: right;
+  float: right;
 }
 </style>
 

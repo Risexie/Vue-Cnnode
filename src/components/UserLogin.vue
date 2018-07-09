@@ -1,23 +1,25 @@
 <template>
   <b-collapse is-nav id="nav_collapse" class="nav_collapse">
     <b-navbar-nav class="ml-auto" id="link">
-      <b-nav-item>注册</b-nav-item>
+      <b-nav-item>注册</b-nav-item> 
     </b-navbar-nav>  
     <b-navbar-nav class="UserNav" v-if="LoginStatus">
       <b-nav-item ><router-link :to="{name:'UserMessage'}"><p>未读信息</p></router-link></b-nav-item>
       <b-nav-item ><router-link :to="{name:'UserCollect',params:{id:userMessage.loginname}}"><p>我的收藏</p></router-link></b-nav-item>
       <b-nav-item ><router-link :to="{name:'Create'}"><p>发表文章</p></router-link></b-nav-item>
-      <b-nav-item ><router-link :to="{name:'Author',params:{id:userMessage.loginname}}"><b-img v-bind:src="userMessage.avatar_url"></b-img></router-link></b-nav-item>     
-      <b-nav-item @click="handleLogOut"><p>退出</p></b-nav-item>
+      <b-nav-item ><router-link :to="{name:'Author',params:{id:userMessage.loginname}}"><b-img :src="userMessage.avatar_url"></b-img></router-link></b-nav-item>     
+      <b-nav-item @click="handleLogOut"><p>退出</p></b-nav-item> 
     </b-navbar-nav>
     <b-navbar-nav v-else>
-    <b-nav-item @click="handleRender" >登录</b-nav-item>
+    <b-nav-item @click="handleRender" >登录</b-nav-item> 
     
     </b-navbar-nav>
-  </b-collapse>
+  </b-collapse>   
 </template>
 <script>
 import axios from "axios";
+import Vuex from "vuex";
+
 
 export default {
   name: "Userlogin",
@@ -33,22 +35,22 @@ export default {
       if (sessionStorage.getItem("LoginStatus")) {
         this.LoginStatus = sessionStorage.getItem("LoginStatus");
         this.accessToken = sessionStorage.getItem("accessToken");
-      axios
-        .post(
-          "https://cnodejs.org/api/v1/accesstoken/?accesstoken=" +
-            this.accessToken
-        )
-        .then(function(response) {
-          return response.data;
-        })
-        .then(data => {
-          if (data.success) {
-            this.userMessage = data;
-          }
-        })
-        .catch(err => {
-          alert(err);
-        });
+        axios
+          .post(
+            "https://cnodejs.org/api/v1/accesstoken/?accesstoken=" +
+              this.accessToken
+          )
+          .then(function(response) {
+            return response.data;
+          })
+          .then(data => {
+            if (data.success) {
+              this.userMessage = data;
+            }
+          })
+          .catch(err => {
+            alert(err);
+          });
       }
     },
     handleLogOut() {
@@ -82,11 +84,13 @@ export default {
             })
             .then(data => {
               if (data.success) {
-                this.userMessage = data
-                this.LoginStatus = true
+                this.userMessage = data;
+                this.LoginStatus = true;
                 sessionStorage.setItem("LoginStatus", this.LoginStatus);
                 sessionStorage.setItem("accessToken", this.accessToken);
-                sessionStorage.setItem("authorId",this.userMessage.id)
+                sessionStorage.setItem("authorLoginName", data.loginname);
+                this.$store.commit('getAccessToken', this.accessToken);
+                this.$store.commit('getLoginName', this.userMessage.loginname)
                 this.$Message.success({
                   render: h => {
                     return h("div", ["登录成功"]);
@@ -103,8 +107,8 @@ export default {
             });
         }
       });
-      }
-    },
+    }
+  },
   mounted() {
     this.isLoginin();
   }
@@ -119,8 +123,8 @@ export default {
   color: rgba(255, 255, 255, 0.5);
   padding: 2px 0px 0px 0px;
 }
-.UserNav :hover{
-  color:rgba(255, 255, 255, 0.75);
+.UserNav :hover {
+  color: rgba(255, 255, 255, 0.75);
 }
 .UserNav a {
   font-size: 14px;
