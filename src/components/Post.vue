@@ -173,13 +173,43 @@ export default {
   color: #666;
 }
 .vhtml >>> img {
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  box-sizing:content-box;
+  background-color:#fff;
+  border:0;
+  
 }
 .vhtml >>> p {
-  font-size: 15px;
-  line-height: 2em;
-  overflow: auto;
+  font-family: Helvetica,Helvetica,Arial,sans-serif;
+  line-height: 1.6;
+  word-wrap: break-word;
+  font-size:16px;
+}
+.vhtml >>> pre{
+  padding:16px;
+  overflow:auto;
+  font-size:85%;
+  line-height:1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+.vhtml >>> blockquote{
+  padding:0 15px;
+  color:#777;
+  border-left:4px solid #ddd;
+}
+.vhtml >>> h2 {
+  padding-bottom:.3em;
+  font-size:1.75em;
+  line-height:1.225;
+  border-bottom:2px solid #eee;
+}
+.vhtml >>> hr {
+  height:4px;
+  padding:0;
+  margin:16px 0;
+  background-color: #e7e7e7;
+  border:0 none;
 }
 .EditLink {
   float: right;
