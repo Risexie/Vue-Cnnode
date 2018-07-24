@@ -1,5 +1,5 @@
 <template>
-<b-container>
+<b-container class="listGroup">
     <b-row>
         <b-col md="9" lg="9" xg="9">
             <b-list-group>
@@ -55,13 +55,12 @@ export default {
   },
   methods: {
     CreatePassage() {
-      this.accessToken = this.$store.state.accessToken;
       axios
         .post(
           "https://cnodejs.org/api/v1/topics/?tab=" +
             this.tab +
             "&accesstoken=" +
-            this.accessToken +
+            this.$store.state.accessToken +
             "&title=" +
             this.createTitle +
             "&content=" +
@@ -83,5 +82,8 @@ export default {
 };
 </script>
 <style scoped>
+.listGroup{
+  padding-top:15px;
+}
 </style>
 

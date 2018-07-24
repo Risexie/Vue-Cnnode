@@ -117,6 +117,9 @@ export default {
   background-color: #80bd01;
   border-radius: 10%;
 }
+.listGroup {
+  padding-top:15px;
+}
 </style>
 
 

@@ -24,7 +24,6 @@ export default {
       uCloudimg:"//dn-cnode.qbox.me/FgQS-GQDfqwAD_v0NuhyYUOUk5MG",
       x7img:'//dn-cnode.qbox.me/Fv9R31Y6ySKKJi95ldk9TRkJ7o5O',
       aliPayimg:'https://render.alipay.com/p/s/taobaonpm_click/image_25',
-
     }
   }
 };

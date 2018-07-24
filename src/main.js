@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'iview/dist/styles/iview.css';
 import Vuex from 'vuex';
+import createPersistedState from "vuex-persistedstate";
 
 
 Vue.use(BootstrapVue);
@@ -20,6 +21,7 @@ Vue.config.productionTip = true
 
 /* Vuex */
 const store = new Vuex.Store({
+  plugins: [createPersistedState()],
   state:{
     accessToken:'',
     loginName:'',

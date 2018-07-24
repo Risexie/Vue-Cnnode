@@ -13,11 +13,11 @@ export default {
   name: "ClientPicture",
   data() {
     return {
-      src:'//dn-cnode.qbox.me/FtG0YVgQ6iginiLpf9W4_ShjiLfU',
-      href:'https://github.com/soliury/noder-react-native',
-      styles:{
-        fontSize:13 + "px",
-        color:"#778087"
+      src: "//dn-cnode.qbox.me/FtG0YVgQ6iginiLpf9W4_ShjiLfU",
+      href: "https://github.com/soliury/noder-react-native",
+      styles: {
+        fontSize: 13 + "px",
+        color: "#778087"
       }
     };
   }

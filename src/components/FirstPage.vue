@@ -1,10 +1,10 @@
 <template>
   <b-container>
      <b-row>
-      <b-col  sm="12" md="12" lg="9" xl="9"> 
+      <b-col sm="12" md="12" lg="9" xl="9"> 
         <ContentList></ContentList>
       </b-col>
-      <b-col   lg="3" xl="3" id="SideNav">
+      <b-col lg="3" xl="3" id="SideNav">
         <SideBarAds></SideBarAds>
         <FriendlyLink></FriendlyLink>
         <ClientPicture></ClientPicture>
@@ -13,7 +13,6 @@
 </b-container>
 </template>
 <script>
-
 import FriendlyLink from "./FriendlyLink";
 import SideBarAds from "./SideBarAds";
 import ClientPicture from "./ClientPicture";
@@ -25,16 +24,15 @@ export default {
     ClientPicture,
     SideBarAds,
     FriendlyLink,
-    ContentList,
-  },
-  
+    ContentList
+  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.listGroup{
-  padding-top:15px;
+.listGroup {
+  padding-top: 15px;
 }
 .listGroup .Navbar .link {
   padding: 10px 5px 5px 3px;

@@ -29,8 +29,10 @@
             </b-col>
           </b-form-row>
     </b-list-group-item>
-    <b-pagination size="sm" :total-rows="1000" v-model="currentPage" :per-page="10">
+    <b-list-group-item class="lastItem">
+      <b-pagination size="sm" :total-rows="1000" v-model="currentPage" :per-page="10">
     </b-pagination>
+    </b-list-group-item>
  </div>
 </template>
 
@@ -148,5 +150,8 @@ export default {
   padding: 2px 3px 2px 3px;
   background-color: #80bd01;
   border-radius: 10%;
+}
+.lastItem {
+  border-top: none;
 }
 </style>

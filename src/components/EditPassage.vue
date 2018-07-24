@@ -1,5 +1,5 @@
 <template>
-<b-container>
+<b-container class="listGroup">
     <b-row>
       <b-col md="9" lg="9" xg="9">
             <b-list-group>
@@ -13,8 +13,8 @@
                         <Option value="dev">Dev(测试板块)</Option>
                      </Select>
                     </p>
-                      <Input   v-model="createTitle" placeholder="标题字数10字以上" style="width: 783px"></Input>
-                      <Input   v-model="createContent" type="textarea" :rows="20" placeholder="文章内容" style="width: 783px"></Input>
+                      <Input v-model="createTitle" placeholder="标题字数10字以上" style="width: 783px"></Input>
+                      <Input v-model="createContent" type="textarea" :rows="20" placeholder="文章内容" style="width: 783px"></Input>
                 </b-list-group-item>
                 <b-list-group-item> <Button  @click="EditPassage" type="primary">提交</Button></b-list-group-item>
             </b-list-group>
@@ -82,8 +82,6 @@ export default {
   },
   methods: {
     fetchPassage() {
-      //读取store数据
-      this.accessToken = this.$store.state.accessToken;
       axios
         .get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
         .then(function(response) {
@@ -126,7 +124,7 @@ export default {
           "https://cnodejs.org/api/v1/topics/update/?tab=" +
             this.tab +
             "&accesstoken=" +
-            this.accessToken +
+            this.$store.state.accessToken +
             "&title=" +
             this.createTitle +
             "&content=" +
@@ -161,7 +159,14 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
+.listGroup{
+  padding-top:15px;
+}
+.otherTopic{
+  padding-top:15px;
+}
 </style>
+
 
 

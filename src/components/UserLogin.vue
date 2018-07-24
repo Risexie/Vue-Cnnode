@@ -34,11 +34,10 @@ export default {
     isLoginin() {
       if (sessionStorage.getItem("LoginStatus")) {
         this.LoginStatus = sessionStorage.getItem("LoginStatus");
-        this.accessToken = sessionStorage.getItem("accessToken");
         axios
           .post(
             "https://cnodejs.org/api/v1/accesstoken/?accesstoken=" +
-              this.accessToken
+              this.$store.state.accessToken
           )
           .then(function(response) {
             return response.data;
@@ -54,8 +53,10 @@ export default {
       }
     },
     handleLogOut() {
-      sessionStorage.clear();
+      this.$store.commit('getAccessToken',null)
+      this.$store.commit('getLoginName',null)
       this.LoginStatus = false;
+      sessionStorage.removeItem('LoginStatus')
     },
     handleRender() {
       this.$Modal.confirm({
@@ -87,8 +88,6 @@ export default {
                 this.userMessage = data;
                 this.LoginStatus = true;
                 sessionStorage.setItem("LoginStatus", this.LoginStatus);
-                sessionStorage.setItem("accessToken", this.accessToken);
-                sessionStorage.setItem("authorLoginName", data.loginname);
                 this.$store.commit('getAccessToken', this.accessToken);
                 this.$store.commit('getLoginName', this.userMessage.loginname)
                 this.$Message.success({
@@ -132,6 +131,7 @@ export default {
 .nav_collapse a {
   font-size: 14px;
 }
+
 </style>
 
 

@@ -6,7 +6,12 @@
       <b-col md="9">
         <b-list-group class="topic">
           <b-list-group-item> 
-          <h1>{{ post.title}}</h1><router-link :to="{name:'EditPassage',params:{id:post.id}}" class="EditLink" v-if="authorName == loginName"><b-button variant="primary">编辑文章</b-button></router-link>
+          <h1>{{ post.title}}</h1>
+             <div class="EditLink" v-if="this.$store.state.accessToken">
+               <Button type="primary" @click="topicDe_collect" class="collectButton" v-if="post.is_collect">取消收藏</Button>
+               <Button type="primary" @click="topicCollect" class="collectButton" v-else>收藏文章</Button>
+              <router-link :to="{name:'EditPassage',params:{id:post.id}}"  v-if="authorName == loginName"><Button type="primary">编辑文章</Button></router-link>
+            </div>
         <p>发布于 {{ timeagoInstance(post.create_at) }}   作者  {{ post.author.loginname}} ,  {{ post.visit_count}} 次浏览</p>
         <br>
         <p v-html="post.content" class="vhtml"></p>
@@ -70,13 +75,18 @@ export default {
       post: [],
       authorName: "",
       authorMessage: [],
-      loginName:'',
+      loginName: ""
     };
   },
   methods: {
     fetchPostData() {
       axios
-        .get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
+        .get(
+          "https://cnodejs.org/api/v1/topic/" +
+            this.$route.params.id +
+            "?accesstoken=" +
+            this.$store.state.accessToken
+        )
         .then(function(response) {
           if (response.data.success) {
             console.log("fetch dada success");
@@ -111,24 +121,62 @@ export default {
           this.$Message.error("读取数据出错");
         });
     },
+    topicCollect() {
+      axios
+        .post(
+          "https://cnodejs.org/api/v1/topic_collect/collect?accesstoken=" +
+            this.$store.state.accessToken +
+            "&topic_id=" +
+            this.$route.params.id
+        )
+        .then(function(response) {
+          if (response.data.success) {
+            this.$Messge.success("收藏成功");
+            return response.data.data;
+          } else {
+            this.$Message.error("收藏失败");
+          }
+        })
+        .catch(err => {
+          this.$Message.error("收藏失敗");
+        });
+    },
+    topicDe_collect() {
+      axios
+        .post(
+          "https://cnodejs.org/api/v1/topic_collect/de_collect?accesstoken=" +
+            this.$store.state.accessToken +
+            "&topic_id" +
+            this.$route.params.id
+        )
+        .then(function(response) {
+          if (response.data.success) {
+            this.$Message.seccuss("已取消收藏");
+          } else {
+            this.$Message.error("取消收藏失败");
+          }
+        })
+        .catch(err => {
+          this.$Message.error("取消收藏失败");
+        });
+    },
     timeagoInstance(time) {
       var timeago_instance = new timeago();
       return timeago_instance.format(time, "zh_CN");
-      
     },
-    shortTitle(title){
-      if(title.length > 16){
-        var shortTitle = title.slice(0,16) + '....'
-        return shortTitle
-      }else {
-        return title
+    shortTitle(title) {
+      if (title.length > 16) {
+        var shortTitle = title.slice(0, 16) + "....";
+        return shortTitle;
+      } else {
+        return title;
       }
     },
-    getAuthorName(){
+    getAuthorName() {
       this.loginName = this.$store.state.loginName;
     }
-    
   },
+
   mounted() {
     this.fetchPostData();
     this.getAuthorName();
@@ -174,45 +222,47 @@ export default {
 }
 .vhtml >>> img {
   max-width: 100%;
-  box-sizing:content-box;
-  background-color:#fff;
-  border:0;
-  
+  box-sizing: content-box;
+  background-color: #fff;
+  border: 0;
 }
 .vhtml >>> p {
-  font-family: Helvetica,Helvetica,Arial,sans-serif;
+  font-family: Helvetica, Helvetica, Arial, sans-serif;
   line-height: 1.6;
   word-wrap: break-word;
-  font-size:16px;
+  font-size: 16px;
 }
-.vhtml >>> pre{
-  padding:16px;
-  overflow:auto;
-  font-size:85%;
-  line-height:1.45;
+.vhtml >>> pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
   background-color: #f7f7f7;
   border-radius: 3px;
 }
-.vhtml >>> blockquote{
-  padding:0 15px;
-  color:#777;
-  border-left:4px solid #ddd;
+.vhtml >>> blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
 }
 .vhtml >>> h2 {
-  padding-bottom:.3em;
-  font-size:1.75em;
-  line-height:1.225;
-  border-bottom:2px solid #eee;
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 2px solid #eee;
 }
 .vhtml >>> hr {
-  height:4px;
-  padding:0;
-  margin:16px 0;
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
   background-color: #e7e7e7;
-  border:0 none;
+  border: 0 none;
 }
 .EditLink {
   float: right;
+}
+.collectButton {
+  margin-right: 10px;
 }
 </style>
 
