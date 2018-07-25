@@ -97,7 +97,7 @@ export default {
           this.createContent = data.content;
         })
         .catch(function(err) {
-          alert(err);
+          this.$Message.error('读取文章出错')
         });
     },
     fetchAuthorData() {
@@ -119,29 +119,45 @@ export default {
         });
     },
     EditPassage() {
-      axios
-        .post(
-          "https://cnodejs.org/api/v1/topics/update/?tab=" +
-            this.tab +
-            "&accesstoken=" +
-            this.$store.state.accessToken +
-            "&title=" +
-            this.createTitle +
-            "&content=" +
-            this.createContent +
-            "&topic_id=" +
-            this.$route.params.id
-        )
+      axios({
+        url: "https://cnodejs.org/api/v1/topics/update",
+        method: "post",
+        data: {
+          accesstoken: this.$store.state.accessToken,
+          tab:this.tab,
+          title:this.createTitle,
+          content:this.createContent
+        },
+        transformRequest: [
+          function(data) {
+            // Do whatever you want to transform the data
+            let ret = "";
+            for (let it in data) {
+              ret +=
+                encodeURIComponent(it) +
+                "=" +
+                encodeURIComponent(data[it]) +
+                "&";
+            }
+            return ret;
+          }
+        ],
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
         .then(function(response) {
-          return data = response.data;
+          return (data = response.data);
         })
         .then(data => {
           if (data.success) {
-            this.$Message.success("编辑成功");
+            this.$Message.success("修改成功");
+          }else {
+            this.$Message.error('修改失败')
           }
         })
         .catch(err => {
-          this.$Message.error(err.message);
+          this.$Message.error("出错");
         });
     },
     shortTitle(title) {

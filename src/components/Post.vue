@@ -8,8 +8,10 @@
           <b-list-group-item> 
           <h1>{{ post.title}}</h1>
              <div class="EditLink" v-if="this.$store.state.accessToken">
-               <Button type="primary" @click="topicDe_collect" class="collectButton" v-if="post.is_collect">取消收藏</Button>
-               <Button type="primary" @click="topicCollect" class="collectButton" v-else>收藏文章</Button>
+              <i-switch size="large" v-model="this.post.is_collect" @on-change="isCollect">
+                <span slot="open">收藏</span>
+                <span slot="close">收藏</span>
+              </i-switch>
               <router-link :to="{name:'EditPassage',params:{id:post.id}}"  v-if="authorName == loginName"><Button type="primary">编辑文章</Button></router-link>
             </div>
         <p>发布于 {{ timeagoInstance(post.create_at) }}   作者  {{ post.author.loginname}} ,  {{ post.visit_count}} 次浏览</p>
@@ -79,6 +81,7 @@ export default {
     };
   },
   methods: {
+    // fetchPostData
     fetchPostData() {
       axios
         .get(
@@ -103,6 +106,7 @@ export default {
           this.$Message.error("读取数据出错");
         });
     },
+    // fetchAuthorData
     fetchAuthorData() {
       axios
         .get("https://cnodejs.org/api/v1/user/" + this.authorName)
@@ -121,86 +125,89 @@ export default {
           this.$Message.error("读取数据出错");
         });
     },
-    topicCollect() {
-      axios({
-        url: "https://cnodejs.org/api/v1/topic_collect/collect",
-        method: "post",
-        data: {
-          accesstoken: this.$store.state.accessToken,
-          topic_id: this.$route.params.id
-        },
-        transformRequest: [
-          function(data) {
-            // Do whatever you want to transform the data
-            let ret = "";
-            for (let it in data) {
-              ret +=
-                encodeURIComponent(it) +
-                "=" +
-                encodeURIComponent(data[it]) +
-                "&";
+    //isCollect
+    isCollect(status) {
+      if (status) {
+        axios({
+          url: "https://cnodejs.org/api/v1/topic_collect/collect",
+          method: "post",
+          data: {
+            accesstoken: this.$store.state.accessToken,
+            topic_id: this.$route.params.id
+          },
+          transformRequest: [
+            function(data) {
+              // Do whatever you want to transform the data
+              let ret = "";
+              for (let it in data) {
+                ret +=
+                  encodeURIComponent(it) +
+                  "=" +
+                  encodeURIComponent(data[it]) +
+                  "&";
+              }
+              return ret;
             }
-            return ret;
-          }
-        ],
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
-        .then(function(response){
-          return response.data
-        })
-        .then(data=>{
-          if(data.success){
-            this.$Message.success('收藏成功')
-          }else {
-            this.$Message.error('收藏失败')
+          ],
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
           }
         })
-        .catch(err => {
-          this.$Message.error("出错");
-        });
-    },
-    topicDe_collect() {
-      axios({
-        url: "https://cnodejs.org/api/v1/topic_collect/de_collect",
-        method: "post",
-        data: {
-          accesstoken: this.$store.state.accessToken,
-          topic_id: this.$route.params.id
-        },
-        transformRequest: [
-          function(data) {
-            // Do whatever you want to transform the data
-            let ret = "";
-            for (let it in data) {
-              ret +=
-                encodeURIComponent(it) +
-                "=" +
-                encodeURIComponent(data[it]) +
-                "&";
+          .then(function(response) {
+            return response.data;
+          })
+          .then(data => {
+            if (data.success) {
+              this.$Message.success("收藏成功");
+            } else {
+              this.$Message.error("收藏失败");
             }
-            return ret;
+          })
+          .catch(err => {
+            this.$Message.error("收藏出错");
+          });
+      } else {
+        axios({
+          url: "https://cnodejs.org/api/v1/topic_collect/de_collect",
+          method: "post",
+          data: {
+            accesstoken: this.$store.state.accessToken,
+            topic_id: this.$route.params.id
+          },
+          transformRequest: [
+            function(data) {
+              // Do whatever you want to transform the data
+              let ret = "";
+              for (let it in data) {
+                ret +=
+                  encodeURIComponent(it) +
+                  "=" +
+                  encodeURIComponent(data[it]) +
+                  "&";
+              }
+              return ret;
+            }
+          ],
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
           }
-        ],
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
-        .then(function(response){
-          return response.data
         })
-        .then(data=>{
-          if(data.success){
-            this.$Message.success('取消收藏成功')
-          }else {
-            this.$Message.error('取消收藏失败')
-          }
-        })
-        .catch(err => {
-          this.$Message.error("出错");
-        });
+          .then(function(response) {
+            return response.data;
+          })
+          .then(data => {
+            if (data.success) {
+              this.$Message.success("取消收藏成功");
+            } else {
+              this.$Message.error("取消收藏失败");
+            }
+          })
+          .catch(err => {
+            this.$Message.error("收藏出错");
+          });
+      }
     },
+    //timeagoInstance
     timeagoInstance(time) {
       var timeago_instance = new timeago();
       return timeago_instance.format(time, "zh_CN");

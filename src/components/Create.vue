@@ -88,10 +88,12 @@ export default {
         .then(data => {
           if (data.success) {
             this.$Message.success("发表成功");
+          }else{
+            this.$Message.error('发布失败')
           }
         })
         .catch(err => {
-          this.$Message.error("发布失败");
+          this.$Message.error("出错");
         });
     }
   }
