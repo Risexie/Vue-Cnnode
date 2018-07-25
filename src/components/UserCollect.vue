@@ -3,7 +3,8 @@
 <b-row>
 <b-col md="9">
 <b-list-group-item variant="dark"><h1>用户收藏</h1></b-list-group-item>
-     <b-list-group-item v-for="item in UserCollect" v-bind:key="item.id" class="item" href="#" >
+     <b-list-group-item v-if="!UserCollect">暂无收藏</b-list-group-item>
+     <b-list-group-item v-for="item in UserCollect" v-bind:key="item.id" class="item" href="#" v-else>
           <b-form-row>
             <b-col  sm="1" md="1" lg="1">
          <router-link :to="{ name:'Author',params:{id:item.author.loginname}}"><b-img v-bind:src="item.author.avatar_url" fluid alt="Responsive image" class="img"></b-img></router-link>
@@ -59,8 +60,7 @@ export default {
     fetchUserCollectData() {
       axios
         .get(
-          "https://cnodejs.org/api/v1/topic_collect/" + this.$route.params.id
-        )
+          "https://cnodejs.org/api/v1/topic_collect/" + this.$route.params.id)
         .then(function(response) {
           return response.data.data;
         })
@@ -73,9 +73,7 @@ export default {
     },
     fetchUserMessage() {
       axios
-        .get(
-          "https://cnodejs.org/api/v1/user/" + this.$route.params.id
-        )
+        .get("https://cnodejs.org/api/v1/user/" + this.$route.params.id)
         .then(function(response) {
           return response.data.data;
         })
@@ -87,9 +85,8 @@ export default {
         });
     }
   },
-  mounted(){
-      this.fetchUserCollectData(),
-      this.fetchUserMessage();
+  mounted() {
+    this.fetchUserCollectData(), this.fetchUserMessage();
   }
 };
 </script>
@@ -118,7 +115,7 @@ export default {
   border-radius: 10%;
 }
 .listGroup {
-  padding-top:15px;
+  padding-top: 15px;
 }
 </style>
 

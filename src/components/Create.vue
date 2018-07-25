@@ -55,17 +55,33 @@ export default {
   },
   methods: {
     CreatePassage() {
-      axios
-        .post(
-          "https://cnodejs.org/api/v1/topics/?tab=" +
-            this.tab +
-            "&accesstoken=" +
-            this.$store.state.accessToken +
-            "&title=" +
-            this.createTitle +
-            "&content=" +
-            this.createContent
-        )
+      axios({
+        url: "https://cnodejs.org/api/v1/topics",
+        method: "post",
+        data: {
+          accesstoken: this.$store.state.accessToken,
+          tab:this.tab,
+          title:this.createTitle,
+          content:this.createContent
+        },
+        transformRequest: [
+          function(data) {
+            // Do whatever you want to transform the data
+            let ret = "";
+            for (let it in data) {
+              ret +=
+                encodeURIComponent(it) +
+                "=" +
+                encodeURIComponent(data[it]) +
+                "&";
+            }
+            return ret;
+          }
+        ],
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
         .then(function(response) {
           return (data = response.data);
         })
@@ -82,8 +98,8 @@ export default {
 };
 </script>
 <style scoped>
-.listGroup{
-  padding-top:15px;
+.listGroup {
+  padding-top: 15px;
 }
 </style>
 

@@ -122,42 +122,83 @@ export default {
         });
     },
     topicCollect() {
-      axios
-        .post(
-          "https://cnodejs.org/api/v1/topic_collect/collect?accesstoken=" +
-            this.$store.state.accessToken +
-            "&topic_id=" +
-            this.$route.params.id
-        )
-        .then(function(response) {
-          if (response.data.success) {
-            this.$Messge.success("收藏成功");
-            return response.data.data;
-          } else {
-            this.$Message.error("收藏失败");
+      axios({
+        url: "https://cnodejs.org/api/v1/topic_collect/collect",
+        method: "post",
+        data: {
+          accesstoken: this.$store.state.accessToken,
+          topic_id: this.$route.params.id
+        },
+        transformRequest: [
+          function(data) {
+            // Do whatever you want to transform the data
+            let ret = "";
+            for (let it in data) {
+              ret +=
+                encodeURIComponent(it) +
+                "=" +
+                encodeURIComponent(data[it]) +
+                "&";
+            }
+            return ret;
+          }
+        ],
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+        .then(function(response){
+          return response.data
+        })
+        .then(data=>{
+          if(data.success){
+            this.$Message.success('收藏成功')
+          }else {
+            this.$Message.error('收藏失败')
           }
         })
         .catch(err => {
-          this.$Message.error("收藏失敗");
+          this.$Message.error("出错");
         });
     },
     topicDe_collect() {
-      axios
-        .post(
-          "https://cnodejs.org/api/v1/topic_collect/de_collect?accesstoken=" +
-            this.$store.state.accessToken +
-            "&topic_id" +
-            this.$route.params.id
-        )
-        .then(function(response) {
-          if (response.data.success) {
-            this.$Message.seccuss("已取消收藏");
-          } else {
-            this.$Message.error("取消收藏失败");
+      axios({
+        url: "https://cnodejs.org/api/v1/topic_collect/de_collect",
+        method: "post",
+        data: {
+          accesstoken: this.$store.state.accessToken,
+          topic_id: this.$route.params.id
+        },
+        transformRequest: [
+          function(data) {
+            // Do whatever you want to transform the data
+            let ret = "";
+            for (let it in data) {
+              ret +=
+                encodeURIComponent(it) +
+                "=" +
+                encodeURIComponent(data[it]) +
+                "&";
+            }
+            return ret;
+          }
+        ],
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+        .then(function(response){
+          return response.data
+        })
+        .then(data=>{
+          if(data.success){
+            this.$Message.success('取消收藏成功')
+          }else {
+            this.$Message.error('取消收藏失败')
           }
         })
         .catch(err => {
-          this.$Message.error("取消收藏失败");
+          this.$Message.error("出错");
         });
     },
     timeagoInstance(time) {
