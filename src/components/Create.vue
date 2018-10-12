@@ -3,7 +3,7 @@
     <b-row>
         <b-col md="9" lg="9" xg="9">
             <b-list-group>
-                <b-list-group-item variant="dark"><h1>发表主题</h1></b-list-group-item>
+                <b-list-group-item class="nav"><span>发表主题</span></b-list-group-item>
                 <b-list-group-item>
                     <p>选择板块 
                      <Select v-model="tab" style="width:200px">
@@ -13,17 +13,21 @@
                         <Option value="dev">Dev(测试板块)</Option>
                      </Select>
                     </p>
-                      <Input v-model="createTitle" placeholder="标题字数10字以上" style="width: 785px"></Input>
+                      <Input v-model="createTitle" placeholder="标题字数10字以上"></Input>
                       <Input v-model="createContent" type="textarea" :rows="20" placeholder="文章内容"></Input>
                 </b-list-group-item>
                 <b-list-group-item> <Button  @click="CreatePassage" type="primary">发表文章</Button></b-list-group-item>
             </b-list-group>
+        </b-col>
+        <b-col md="3" lg="3" xg="3">
+          <UserMessage/>
         </b-col>
     </b-row>
 </b-container>
 </template>
 <script>
 import axios from "axios";
+import UserMessage from "./Common/UserMessage"
 
 export default {
   name: "Create",
@@ -102,6 +106,10 @@ export default {
 <style scoped>
 .listGroup {
   padding-top: 15px;
+}
+.listGroup .nav{
+background-color: #f6f6f6;
+font-size:14px;
 }
 </style>
 

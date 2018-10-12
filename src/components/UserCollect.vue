@@ -2,7 +2,7 @@
 <b-container class="listGroup">
 <b-row>
 <b-col md="9">
-<b-list-group-item variant="dark"><h1>用户收藏</h1></b-list-group-item>
+<b-list-group-item class="nav"><span>用户收藏</span></b-list-group-item>
      <b-list-group-item v-if="!UserCollect">暂无收藏</b-list-group-item>
      <b-list-group-item v-for="item in UserCollect" v-bind:key="item.id" class="item" href="#" v-else>
           <b-form-row>
@@ -10,7 +10,7 @@
          <router-link :to="{ name:'Author',params:{id:item.author.loginname}}"><b-img v-bind:src="item.author.avatar_url" fluid alt="Responsive image" class="img"></b-img></router-link>
             </b-col>
             <b-col  sm="1" md="1" lg="1">
-          <p>{{ item.reply_count }}/ {{ item.visit_count }} </p>
+          <span class="replyleft">{{ item.reply_count }}</span><span>/ {{ item.visit_count }}</span>
             </b-col>
                <b-col sm="1" md="1" lg="1">
             <div class="tab">
@@ -29,17 +29,7 @@
     </b-col>
 
     <b-col md ="3" class="author">
-      <b-card header="个人信息" >
-        <b-form-row>
-          <b-col sm="4" md="4" lg="4"> 
-         <router-link :to="{ name:'Author',params:{id:UserMessage.loginname}}"><b-img :src="UserMessage.avatar_url" fluid alt="Responsive image"></b-img></router-link>
-          </b-col>
-          <b-col sm="8" md="8" lg="8">
-         <router-link :to="{ name:'Author',params:{ id:UserMessage.loginname}}">{{ UserMessage.loginname }}</router-link>
-         <p>积分： {{ UserMessage.score}}</p>
-          </b-col>
-        </b-form-row>
-      </b-card>
+      <UserMessage/>
       </b-col>
 </b-row>
 </b-container>
@@ -47,17 +37,17 @@
 </template>
 <script>
 import axios from "axios";
+import UserMessage from "./Common/UserMessage"
 
 export default {
   name: "UserCollect",
   data() {
     return {
       UserCollect: [],
-      UserMessage: []
+      Message: []
     };
   },
-  methods: {
-    fetchUserCollectData() {
+  created() {
       axios
         .get(
           "https://cnodejs.org/api/v1/topic_collect/" + this.$route.params.id)
@@ -70,24 +60,7 @@ export default {
         .catch(function(err) {
           alert(err);
         });
-    },
-    fetchUserMessage() {
-      axios
-        .get("https://cnodejs.org/api/v1/user/" + this.$route.params.id)
-        .then(function(response) {
-          return response.data.data;
-        })
-        .then(data => {
-          this.UserMessage = data;
-        })
-        .catch(function(err) {
-          alert(err);
-        });
     }
-  },
-  mounted() {
-    this.fetchUserCollectData(), this.fetchUserMessage();
-  }
 };
 </script>
 <style scoped>
@@ -102,21 +75,33 @@ export default {
   border-radius: 10%;
 }
 .tab {
-  color: #999;
-  padding: 2px 3px 2px 3px;
   background-color: #e5e5e5;
   border-radius: 10%;
   text-align: center;
+  height:30px;
+  line-height: 30px;
+  width:50px;
+
 }
 .tabTop {
   color: white;
   padding: 2px 3px 2px 3px;
   background-color: #80bd01;
   border-radius: 10%;
+  height:30px;
+  line-height: 30px;
+  width:50px;
 }
 .listGroup {
   padding-top: 15px;
+}.listGroup .replyleft{
+  color:#9e78c0
 }
+.listGroup .nav{
+background-color: #f6f6f6;
+font-size:14px;
+}
+
 </style>
 
 

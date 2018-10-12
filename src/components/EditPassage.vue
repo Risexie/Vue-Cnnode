@@ -21,18 +21,8 @@
       </b-col>
       <!-- 右侧作者信息 -->
 
-      <b-col md ="3" class="author">
-      <b-card header="作者" >
-        <b-form-row>
-          <b-col sm="4" md="4" lg="4"> 
-         <router-link :to="{ name:'Author',params:{id:authorMessage.loginname}}"><b-img :src="authorMessage.avatar_url" fluid alt="Responsive image"></b-img></router-link>
-          </b-col>
-          <b-col sm="8" md="8" lg="8">
-         <router-link :to="{ name:'Author',params:{id:authorMessage.loginname}}">{{ authorMessage.loginname }}</router-link>
-         <p>积分： {{ authorMessage.score}}</p>
-          </b-col>
-        </b-form-row>
-      </b-card>
+      <b-col md ="3">
+        <UserMessage/>
       <div class="otherTopic">
       <b-card header="作者的其他话题" >
         <div v-for="item in authorMessage.recent_topics" :key="item.id">
@@ -49,6 +39,7 @@
 </template>
 <script>
 import axios from "axios";
+import UserMessage from "./Common/UserMessage"
 
 export default {
   name: "EditPassage",
@@ -80,9 +71,8 @@ export default {
       ],
     };
   },
-  methods: {
-    fetchPassage() {
-      axios
+  created(){
+    axios
         .get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
         .then(function(response) {
           if (response.data.success) {
@@ -99,9 +89,8 @@ export default {
         .catch(function(err) {
           this.$Message.error('读取文章出错')
         });
-    },
-    fetchAuthorData() {
-      axios
+
+        axios
         .get("https://cnodejs.org/api/v1/user/" + this.$store.state.loginName)
         .then(function(response) {
           if (response.data.success) {
@@ -117,7 +106,8 @@ export default {
         .catch(err => {
           this.$Message.error("读取数据出错");
         });
-    },
+  },
+  methods: {
     EditPassage() {
       axios({
         url: "https://cnodejs.org/api/v1/topics/update",
@@ -169,10 +159,6 @@ export default {
       }
     }
   },
-  mounted() {
-    this.fetchPassage();
-    this.fetchAuthorData();
-  }
 };
 </script>
 <style scoped>

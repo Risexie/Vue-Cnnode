@@ -4,7 +4,7 @@
       <b-nav-item>注册</b-nav-item> 
     </b-navbar-nav>  
     <b-navbar-nav class="UserNav" v-if="LoginStatus">
-      <b-nav-item ><router-link :to="{name:'UserMessage'}"><Badge :count="messageCount" overflow-count="100"><p>未读信息</p></Badge></router-link></b-nav-item>
+      <b-nav-item ><router-link :to="{name:'Message'}"><Badge :count="messageCount" overflow-count="100"><p>未读信息</p></Badge></router-link></b-nav-item>
       <b-nav-item ><router-link :to="{name:'UserCollect',params:{id:userMessage.loginname}}"><p>我的收藏</p></router-link></b-nav-item>
       <b-nav-item ><router-link :to="{name:'Create'}"><p>发表文章</p></router-link></b-nav-item>
       <b-nav-item ><router-link :to="{name:'Author',params:{id:userMessage.loginname}}"><b-img :src="userMessage.avatar_url"></b-img></router-link></b-nav-item>     
@@ -20,7 +20,6 @@
 import axios from "axios";
 import Vuex from "vuex";
 
-
 export default {
   name: "Userlogin",
   data() {
@@ -28,37 +27,52 @@ export default {
       accessToken: "",
       userMessage: [],
       LoginStatus: false,
-      messageCount:0,
+      messageCount: 0
     };
   },
+  created() {
+    if (sessionStorage.getItem("LoginStatus")) {
+      this.LoginStatus = sessionStorage.getItem("LoginStatus");
+      axios
+        .post(
+          "https://cnodejs.org/api/v1/accesstoken/?accesstoken=" +
+            this.$store.state.accessToken
+        )
+        .then(function(response) {
+          return response.data;
+        })
+        .then(data => {
+          if (data.success) {
+            this.userMessage = data;
+          }
+        })
+        .catch(err => {
+          alert(err);
+        });
+    }
+    //getMessageCount
+    axios
+      .get(
+        "https://cnodejs.org/api/v1/message/count?accesstoken=" +
+          this.$store.state.accessToken
+      )
+      .then(function(response) {
+        return response.data;
+      })
+      .then(data => {
+        if (data.success) {
+          this.messageCount = data.data;
+        }
+      });
+  },
   methods: {
-    isLoginin() {
-      if (sessionStorage.getItem("LoginStatus")) {
-        this.LoginStatus = sessionStorage.getItem("LoginStatus");
-        axios
-          .post(
-            "https://cnodejs.org/api/v1/accesstoken/?accesstoken=" +
-              this.$store.state.accessToken
-          )
-          .then(function(response) {
-            return response.data;
-          })
-          .then(data => {
-            if (data.success) {
-              this.userMessage = data;
-            }
-          })
-          .catch(err => {
-            alert(err);
-          });
-      }
-    },
     handleLogOut() {
-      this.$store.commit('getAccessToken',null)
-      this.$store.commit('getLoginName',null)
+      this.$store.commit("getAccessToken", null);
+      this.$store.commit("getLoginName", null);
       this.LoginStatus = false;
-      sessionStorage.removeItem('LoginStatus')
+      sessionStorage.removeItem("LoginStatus");
     },
+    
     handleRender() {
       this.$Modal.confirm({
         render: h => {
@@ -89,8 +103,8 @@ export default {
                 this.userMessage = data;
                 this.LoginStatus = true;
                 sessionStorage.setItem("LoginStatus", this.LoginStatus);
-                this.$store.commit('getAccessToken', this.accessToken);
-                this.$store.commit('getLoginName', this.userMessage.loginname)
+                this.$store.commit("getAccessToken", this.accessToken);
+                this.$store.commit("getLoginName", this.userMessage.loginname);
                 this.$Message.success({
                   render: h => {
                     return h("div", ["登录成功"]);
@@ -106,25 +120,8 @@ export default {
               });
             });
         }
-      })
-    },
-
-    //getMessageCount
-    getMessageCount(){
-      axios.get('https://cnodejs.org/api/v1/message/count?accesstoken=' + this.$store.state.accessToken)
-      .then(function(response){
-        return response.data
-      })
-      .then(data => {
-        if(data.success){
-          this.messageCount = data.data
-        }
-      })
+      });
     }
-  },
-  mounted() {
-    this.isLoginin();
-    this.messageCount();
   }
 };
 </script>
@@ -146,7 +143,6 @@ export default {
 .nav_collapse a {
   font-size: 14px;
 }
-
 </style>
 
 

@@ -20,9 +20,9 @@ export default {
       phpHub:"http://phphub.org/",
       testerHome:"https://testerhome.com/",
       //img
-      rubyChinaImg:"//o4j806krb.qnssl.com/public/images/ruby-china-20150529.png",
-      goLangImg:"//o4j806krb.qnssl.com/public/images/golangtc-logo.png",
-      phpHubImg:"//o4j806krb.qnssl.com/public/images/phphub-logo.png",
+      rubyChinaImg:"../static/ruby.png",
+      goLangImg:"../static/golang.png",
+      phpHubImg:"../static/php.png",
       testerHomeImg:"//dn-cnode.qbox.me/FjLUc7IJ2--DqS706etPQ1EGajxK",
     };
   }

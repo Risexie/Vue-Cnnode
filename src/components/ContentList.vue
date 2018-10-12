@@ -1,6 +1,6 @@
 <template>
  <div class="listGroup">
-   <b-list-group-item  variant="secondary" class="nav">
+   <b-list-group-item class="nav">
    <b-link :class="{'active':activeItem === 'all'}" @click="select('all');cut('all')">全部</b-link>
    <b-link :class="{'active':activeItem === 'good'}" @click="select('good');cut('good')">精华</b-link>
    <b-link :class="{'active':activeItem === 'share'}" @click="select('share');cut('share')">分享</b-link>
@@ -13,7 +13,7 @@
          <router-link :to="{ name:'Author',params:{id:item.author.loginname}}"><b-img :src="item.author.avatar_url" fluid alt="Responsive image" class="img"></b-img></router-link>
             </b-col>
             <b-col  sm="1" md="1" lg="1">
-          <p>{{ item.reply_count }} / {{ item.visit_count }} </p>
+          <span class="replyleft">{{ item.reply_count }}</span><span>/ {{ item.visit_count }} </span> 
             </b-col>
                <b-col sm="1" md="1" lg="1">
             <div class="tab">
@@ -127,29 +127,45 @@ export default {
 }
 .listGroup .nav a {
   padding: 5px 7px 5px 7px;
-  color: white;
+  color: #80bd01;
   font-size: 16px;
   font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma,
     "Hiragino Sans GB";
 }
+.listGroup .nav{
+  background-color:#f6f6f6
+}
+
 .active {
+  color:white !important;
   background-color: #80bd01;
   padding: 3px;
   border-radius: 15%;
   font-size: 14px;
+
+}
+.listGroup span{
+  height:30px;
+  line-height: 30px;
+}
+.listGroup .replyleft{
+  color:#9e78c0
 }
 .tab {
-  color: #999;
-  padding: 2px 3px 2px 3px;
   background-color: #e5e5e5;
   border-radius: 10%;
   text-align: center;
+  height:30px;
+  line-height:30px;
+  width:50px;
 }
 .tabTop {
   color: white;
-  padding: 2px 3px 2px 3px;
+  padding: 2px 4px;
   background-color: #80bd01;
   border-radius: 10%;
+  height:30px;
+  line-height:28px;
 }
 .lastItem {
   border-top: none;

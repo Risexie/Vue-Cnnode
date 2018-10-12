@@ -4,7 +4,7 @@ import FirstPage from '@/components/FirstPage'
 import Post from '@/components/Post'
 import Author from '@/components/Author'
 import UserCollect from '@/components/UserCollect'
-import UserMessage from '@/components/UserMessage'
+import Message from '@/components/Message'
 import Create from '@/components/Create'
 import EditPassage from '@/components/EditPassage'
 
@@ -33,9 +33,9 @@ export default new Router({
       component: UserCollect
     },
     {
-      path: '/UserMessage',
-      name: 'UserMessage',
-      component: UserMessage
+      path: '/Message',
+      name: 'Message',
+      component: Message
     },
     {
       path: '/Create',

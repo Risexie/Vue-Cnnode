@@ -2,20 +2,20 @@
   <b-container>
      <b-row>
       <b-col sm="12" md="12" lg="9" xl="9"> 
-        <ContentList></ContentList>
+        <ContentList/>
       </b-col>
       <b-col lg="3" xl="3" id="SideNav">
-        <SideBarAds></SideBarAds>
-        <FriendlyLink></FriendlyLink>
-        <ClientPicture></ClientPicture>
+        <SideBarAds/>
+        <FriendlyLink/>
+        <ClientPicture/>
       </b-col>
      </b-row>
 </b-container>
 </template>
 <script>
-import FriendlyLink from "./FriendlyLink";
-import SideBarAds from "./SideBarAds";
-import ClientPicture from "./ClientPicture";
+import FriendlyLink from "./adComponents/FriendlyLink";
+import SideBarAds from "./adComponents/SideBarAds";
+import ClientPicture from "./adComponents/ClientPicture";
 import ContentList from "./ContentList";
 
 export default {

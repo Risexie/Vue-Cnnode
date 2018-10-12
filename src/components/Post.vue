@@ -41,17 +41,17 @@
       <b-card header="作者" >
         <b-form-row>
           <b-col sm="4" md="4" lg="4"> 
-         <router-link :to="{ name:'Author',params:{id:authorMessage.loginname}}"><b-img :src="authorMessage.avatar_url" fluid alt="Responsive image"></b-img></router-link>
+         <router-link :to="{ name:'Author',params:{id:UserMessage.loginname}}"><b-img :src="UserMessage.avatar_url" fluid alt="Responsive image"></b-img></router-link>
           </b-col>
           <b-col sm="8" md="8" lg="8">
-         <router-link :to="{ name:'Author',params:{ id:authorMessage.loginname}}">{{ authorMessage.loginname }}</router-link>
-         <p>积分： {{ authorMessage.score}}</p>
+         <router-link :to="{ name:'Author',params:{ id:UserMessage.loginname}}">{{ UserMessage.loginname }}</router-link>
+         <p>积分： {{ UserMessage.score}}</p>
           </b-col>
         </b-form-row>
       </b-card>
       <div class="otherTopic">
       <b-card header="作者的其他话题" >
-        <div v-for="item in authorMessage.recent_topics" :key="item.id">
+        <div v-for="item in UserMessage.recent_topics" :key="item.id">
           <p>
          <router-link :to="{ name:'Post',params:{ id:item.id }}" style="font-size:14px;line-height:30px">{{ shortTitle(item.title) }} </router-link>
          </p>
@@ -76,14 +76,12 @@ export default {
     return {
       post: [],
       authorName: "",
-      authorMessage: [],
+      UserMessage: [],
       loginName: ""
     };
   },
-  methods: {
-    // fetchPostData
-    fetchPostData() {
-      axios
+  created(){
+    axios
         .get(
           "https://cnodejs.org/api/v1/topic/" +
             this.$route.params.id +
@@ -105,7 +103,9 @@ export default {
         .catch(function(err) {
           this.$Message.error("读取数据出错");
         });
-    },
+        this.loginName = this.$store.state.loginName;
+  },
+  methods: {
     // fetchAuthorData
     fetchAuthorData() {
       axios
@@ -119,7 +119,7 @@ export default {
           }
         })
         .then(data => {
-          this.authorMessage = data;
+          this.UserMessage = data;
         })
         .catch(err => {
           this.$Message.error("读取数据出错");
@@ -220,16 +220,7 @@ export default {
         return title;
       }
     },
-    getAuthorName() {
-      this.loginName = this.$store.state.loginName;
-    }
   },
-
-  mounted() {
-    this.fetchPostData();
-    this.getAuthorName();
-  },
-
   watch: {
     authorName: "fetchAuthorData",
     $route(to, from) {

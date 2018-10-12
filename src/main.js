@@ -12,12 +12,16 @@ import 'iview/dist/styles/iview.css';
 import Vuex from 'vuex';
 import createPersistedState from "vuex-persistedstate";
 
+//全局组件
+import UserMessage from "./components/Common/UserMessage"
 
 Vue.use(BootstrapVue);
 Vue.use(iView);
 Vue.use(Vuex);
 Vue.prototype.$http = axios;
-Vue.config.productionTip = true
+Vue.config.productionTip = true;
+Vue.component('UserMessage',UserMessage)
+
 
 /* Vuex */
 const store = new Vuex.Store({
@@ -25,6 +29,7 @@ const store = new Vuex.Store({
   state:{
     accessToken:'',
     loginName:'',
+    avatar_url:'',
   },
   mutations:{
     getAccessToken(state,accessToken){

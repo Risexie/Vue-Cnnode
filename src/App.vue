@@ -1,18 +1,18 @@
 <template>
   <div id="app">
+    <Header/>
     <div class="content">
-    <Header></Header>
     <router-view/>
     </div>
     <div class="footer">
-    <Footer></Footer>
+    <Footer/>
     </div>
   </div>
 </template>
 
 <script>
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./components/Common/Header";
+import Footer from "./components/Common/Footer";
 export default {
   name: "App",
   components:{
@@ -22,7 +22,7 @@ export default {
 };
 </script>
 <style>
-body {
+#app {
   background-color:#e1e1e1;
 }
 .content{
@@ -30,7 +30,6 @@ body {
 }
 .footer{
   padding-top:20px;
-  height: 160px;
 }
 
 </style>
