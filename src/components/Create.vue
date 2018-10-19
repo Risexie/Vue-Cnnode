@@ -5,16 +5,15 @@
             <b-list-group>
                 <b-list-group-item class="nav"><span>发表主题</span></b-list-group-item>
                 <b-list-group-item>
-                    <p>选择板块 
                      <Select v-model="tab" style="width:200px">
                         <Option value="ask" disabled>Ask</Option>
                         <Option value="share" disabled>Share</Option>
                         <Option value="job" disabled>Job</Option>
                         <Option value="dev">Dev(测试板块)</Option>
                      </Select>
-                    </p>
-                      <Input v-model="createTitle" placeholder="标题字数10字以上"></Input>
-                      <Input v-model="createContent" type="textarea" :rows="20" placeholder="文章内容"></Input>
+                     <span>板块选择</span>
+                      <b-form-input v-model="createTitle" placeholder="标题字数10字以上"></b-form-input>
+                      <b-form-textarea v-model="createContent" type="textarea" :rows="20" placeholder="文章内容"></b-form-textarea>
                 </b-list-group-item>
                 <b-list-group-item> <Button  @click="CreatePassage" type="primary">发表文章</Button></b-list-group-item>
             </b-list-group>

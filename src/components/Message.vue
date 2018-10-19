@@ -26,7 +26,7 @@
        
 
 
-    <b-list-group-item class="nav">已读消息</b-list-group-item>
+    <b-list-group-item class="nav">过往消息</b-list-group-item>
     <b-list-group-item v-for="item in messages.has_read_messages" v-bind:key="item.id" class="has_read_messages">
         <b-row>
           <b-col md="1" lg="1">
