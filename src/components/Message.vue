@@ -1,5 +1,5 @@
 <template>
-<b-container class="listGroup">
+<b-container class="listGroup"> 
   <b-row>
       <!-- 左侧消息 -->
     <b-col sm="12" md="12" lg="9">

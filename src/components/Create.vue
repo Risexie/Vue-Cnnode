@@ -6,9 +6,9 @@
                 <b-list-group-item class="nav"><span>发表主题</span></b-list-group-item>
                 <b-list-group-item>
                      <Select v-model="tab" style="width:200px">
-                        <Option value="ask" disabled>Ask</Option>
-                        <Option value="share" disabled>Share</Option>
-                        <Option value="job" disabled>Job</Option>
+                        <Option value="ask">Ask</Option>
+                        <Option value="share">Share</Option>
+                        <Option value="job">Job</Option>
                         <Option value="dev">Dev(测试板块)</Option>
                      </Select>
                      <span>板块选择</span>
