@@ -1,5 +1,4 @@
 <template>
-    <b-card header="个人信息" >
         <b-form-row>
           <b-col sm="4" md="4" lg="4"> 
          <router-link :to="{ name:'Author',params:{id:UserMessage.loginname}}"><b-img :src="UserMessage.avatar_url" fluid alt="Responsive image"></b-img></router-link>
@@ -9,21 +8,19 @@
          <p>积分： {{ UserMessage.score}}</p>
           </b-col>
         </b-form-row>
-    </b-card>
-    
 </template>
 <script>
 import axios from "axios";
 
 export default {
   name: "UserMessage",
-  data: function() {
+  data:function(){
     return {
-      UserMessage:''
+      UserMessage:[]
     }
   },
   created() {
-    axios
+     axios
       .get("https://cnodejs.org/api/v1/user/" + this.$store.state.loginName)
       .then(function(response) {
         return response.data.data;
@@ -34,8 +31,9 @@ export default {
       .catch(function(err) {
         alert(err);
       });
-  }
-};
+
+  },
+}
 </script>
 <style scoped>
 

@@ -1,7 +1,7 @@
 <template>
 <b-container class="listGroup">
     <b-row>
-        <b-col md="9" lg="9" xg="9">
+        <b-col sm="12" md="12" lg="9">
             <b-list-group>
                 <b-list-group-item class="nav"><span>发表主题</span></b-list-group-item>
                 <b-list-group-item>
@@ -19,8 +19,10 @@
                 <b-list-group-item> <Button  @click="CreatePassage" type="primary">发表文章</Button></b-list-group-item>
             </b-list-group>
         </b-col>
-        <b-col md="3" lg="3" xg="3">
+        <b-col class="d-none d-lg-block d-xl-block">
+          <b-card header="个人信息">
           <UserMessage/>
+          </b-card>
         </b-col>
     </b-row>
 </b-container>
@@ -84,10 +86,10 @@ export default {
         ],
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
-        }
+        } 
       })
         .then(function(response) {
-          return (data = response.data);
+          return response.data
         })
         .then(data => {
           if (data.success) {
@@ -99,6 +101,8 @@ export default {
         .catch(err => {
           this.$Message.error("出错");
         });
+
+        
     }
   }
 };

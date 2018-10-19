@@ -1,7 +1,7 @@
 <template>
 <b-container class="listGroup">
 <b-row>
-<b-col md="9">
+<b-col sm="12" md="12" lg="9">
 <b-list-group-item class="nav"><span>用户收藏</span></b-list-group-item>
      <b-list-group-item v-if="!UserCollect">暂无收藏</b-list-group-item>
      <b-list-group-item v-for="item in UserCollect" v-bind:key="item.id" class="item" href="#" v-else>
@@ -28,8 +28,10 @@
     </b-list-group-item>
     </b-col>
 
-    <b-col md ="3" class="author">
+    <b-col class="d-none d-lg-block d-xl-block md='3'">
+      <b-card header="个人信息">
       <UserMessage/>
+      </b-card>
       </b-col>
 </b-row>
 </b-container>

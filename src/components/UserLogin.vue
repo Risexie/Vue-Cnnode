@@ -1,7 +1,6 @@
 <template>
   <b-collapse is-nav id="nav_collapse" class="nav_collapse">
     <b-navbar-nav class="ml-auto" id="link">
-      <b-nav-item>注册</b-nav-item> 
     </b-navbar-nav>  
     <b-navbar-nav class="UserNav" v-if="LoginStatus">
       <b-nav-item ><router-link :to="{name:'Message'}"><Badge :count="messageCount" overflow-count="100"><p>未读信息</p></Badge></router-link></b-nav-item>
@@ -12,7 +11,6 @@
     </b-navbar-nav>
     <b-navbar-nav v-else>
     <b-nav-item @click="handleRender" >登录</b-nav-item> 
-    
     </b-navbar-nav>
   </b-collapse>   
 </template>

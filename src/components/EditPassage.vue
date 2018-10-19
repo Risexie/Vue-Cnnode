@@ -1,9 +1,9 @@
 <template>
 <b-container class="listGroup">
     <b-row>
-      <b-col md="9" lg="9" xg="9">
+      <b-col md="12" lg="9">
             <b-list-group>
-                <b-list-group-item variant="dark"><h1>发表主题</h1></b-list-group-item>
+                <b-list-group-item class="nav">发表主题</b-list-group-item>
                 <b-list-group-item>
                     <p>选择板块
                      <Select v-model="tab" style="width:200px">
@@ -13,44 +13,43 @@
                         <Option value="dev">Dev(测试板块)</Option>
                      </Select>
                     </p>
-                      <Input v-model="createTitle" placeholder="标题字数10字以上" style="width: 783px"></Input>
-                      <Input v-model="createContent" type="textarea" :rows="20" placeholder="文章内容" style="width: 783px"></Input>
+                      <Input v-model="createTitle" placeholder="标题字数10字以上"></Input>
+                      <Input v-model="createContent" type="textarea" :rows="20" placeholder="文章内容"></Input>
                 </b-list-group-item>
-                <b-list-group-item> <Button  @click="EditPassage" type="primary">提交</Button></b-list-group-item>
+                <b-list-group-item><Button @click="EditPassage" type="primary">提交</Button></b-list-group-item>
             </b-list-group>
       </b-col>
       <!-- 右侧作者信息 -->
 
-      <b-col md ="3">
-        <UserMessage/>
-      <div class="otherTopic">
-      <b-card header="作者的其他话题" >
-        <div v-for="item in authorMessage.recent_topics" :key="item.id">
-          <p>
-         <router-link :to="{ name:'Post',params:{ id:item.id }}" style="font-size:14px;line-height:30px">{{ shortTitle(item.title) }} </router-link>
-         </p>
-         </div>
-       </b-card>
-      </div>
+      <b-col class="d-none d-lg-block d-xl-block">
+        <b-card header="作者信息" >
+          <UserMessage/>
+        </b-card>
+
+        <b-card header="作者的其他话题" class="otherTopic" >
+          <div v-for="item in authorMessage.recent_topics" :key="item.id">
+           <router-link :to="{ name:'Post',params:{ id:item.id }}" style="font-size:14px;line-height:30px">{{ shortTitle(item.title) }} </router-link>
+          </div>
+         </b-card>
       </b-col>
-    </b-row>
+      </b-row>
 </b-container>
     
 </template>
 <script>
 import axios from "axios";
-import UserMessage from "./Common/UserMessage"
+import UserMessage from "./Common/UserMessage";
 
 export default {
   name: "EditPassage",
-  data :function() {
+  data: function() {
     return {
-      createTitle: '',
-      createContent: '',
-      accessToken: '',
+      createTitle: "",
+      createContent: "",
+      accessToken: "",
       authorMessage: [],
       tab: "",
-      
+
       cityList: [
         {
           value: "ask",
@@ -68,44 +67,44 @@ export default {
           value: "dev",
           label: "dev"
         }
-      ],
+      ]
     };
   },
-  created(){
+  created() {
     axios
-        .get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
-        .then(function(response) {
-          if (response.data.success) {
-            console.log("fetch data success");
-            return response.data.data;
-          } else {
-            throw new Error("failed to fetch dada");
-          }
-        })
-        .then(data => {
-          this.createTitle = data.title;
-          this.createContent = data.content;
-        })
-        .catch(function(err) {
-          this.$Message.error('读取文章出错')
-        });
+      .get("https://cnodejs.org/api/v1/topic/" + this.$route.params.id)
+      .then(function(response) {
+        if (response.data.success) {
+          console.log("fetch data success");
+          return response.data.data;
+        } else {
+          throw new Error("failed to fetch dada");
+        }
+      })
+      .then(data => {
+        this.createTitle = data.title;
+        this.createContent = data.content;
+      })
+      .catch(function(err) {
+        this.$Message.error("读取文章出错");
+      });
 
-        axios
-        .get("https://cnodejs.org/api/v1/user/" + this.$store.state.loginName)
-        .then(function(response) {
-          if (response.data.success) {
-            console.log("fetch AuthorData success");
-            return response.data.data;
-          } else {
-            this.$Message.error("无法读取数据");
-          }
-        })
-        .then(data => {
-          this.authorMessage = data;
-        })
-        .catch(err => {
-          this.$Message.error("读取数据出错");
-        });
+    axios
+      .get("https://cnodejs.org/api/v1/user/" + this.$store.state.loginName)
+      .then(function(response) {
+        if (response.data.success) {
+          console.log("fetch AuthorData success");
+          return response.data.data;
+        } else {
+          this.$Message.error("无法读取数据");
+        }
+      })
+      .then(data => {
+        this.authorMessage = data;
+      })
+      .catch(err => {
+        this.$Message.error("读取数据出错");
+      });
   },
   methods: {
     EditPassage() {
@@ -114,9 +113,10 @@ export default {
         method: "post",
         data: {
           accesstoken: this.$store.state.accessToken,
-          tab:this.tab,
-          title:this.createTitle,
-          content:this.createContent
+          id:this.$route.params.id,
+          tab: this.tab,
+          title: this.createTitle,
+          content: this.createContent
         },
         transformRequest: [
           function(data) {
@@ -142,8 +142,8 @@ export default {
         .then(data => {
           if (data.success) {
             this.$Message.success("修改成功");
-          }else {
-            this.$Message.error('修改失败')
+          } else {
+            this.$Message.error("修改失败");
           }
         })
         .catch(err => {
@@ -158,15 +158,24 @@ export default {
         return title;
       }
     }
-  },
+  }
 };
 </script>
+
 <style scoped>
-.listGroup{
-  padding-top:15px;
+.listGroup {
+  padding-top: 15px;
 }
-.otherTopic{
-  padding-top:15px;
+.otherTopic {
+  margin-top: 15px;
+ 
+}
+.otherTopic a{
+ color:#888;
+}
+.nav {
+  background-color: #f6f6f6;
+  font-size: 14px;
 }
 </style>
 

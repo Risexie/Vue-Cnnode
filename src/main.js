@@ -10,16 +10,17 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'iview/dist/styles/iview.css';
 import Vuex from 'vuex';
-import createPersistedState from "vuex-persistedstate";
-
-//全局组件
-import UserMessage from "./components/Common/UserMessage"
+import createPersistedState from "vuex-persistedstate"; //Vuex插件
 
 Vue.use(BootstrapVue);
 Vue.use(iView);
 Vue.use(Vuex);
 Vue.prototype.$http = axios;
 Vue.config.productionTip = true;
+
+//全局组件
+
+import UserMessage from "./components/Common/UserMessage"
 Vue.component('UserMessage',UserMessage)
 
 

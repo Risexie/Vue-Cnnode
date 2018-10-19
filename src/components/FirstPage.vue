@@ -1,18 +1,20 @@
 <template>
   <b-container>
      <b-row>
-      <b-col sm="12" md="12" lg="9" xl="9"> 
+      <b-col sm="12" md="12" lg="9"> 
         <ContentList/>
       </b-col>
-      <b-col lg="3" xl="3" id="SideNav">
+      <b-col class="d-none d-lg-block d-xl-block">
         <SideBarAds/>
         <FriendlyLink/>
         <ClientPicture/>
       </b-col>
      </b-row>
 </b-container>
+
 </template>
 <script>
+
 import FriendlyLink from "./adComponents/FriendlyLink";
 import SideBarAds from "./adComponents/SideBarAds";
 import ClientPicture from "./adComponents/ClientPicture";

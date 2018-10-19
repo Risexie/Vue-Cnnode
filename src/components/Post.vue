@@ -3,7 +3,7 @@
 <b-container>
     <b-row>
       <!-- 左侧文章信息 -->
-      <b-col md="9">
+      <b-col md="12" lg="9">
         <b-list-group class="topic">
           <b-list-group-item> 
           <h1>{{ post.title}}</h1>
@@ -37,7 +37,7 @@
       </b-col>
       <!-- 右侧作者信息 -->
   
-      <b-col md ="3" class="author">
+      <b-col  class="author d-none d-lg-block d-xl-block" lg="3">
       <b-card header="作者" >
         <b-form-row>
           <b-col sm="4" md="4" lg="4"> 
@@ -81,7 +81,11 @@ export default {
     };
   },
   created(){
-    axios
+    this.fetchPostdata();
+  },
+  methods: {
+    fetchPostdata(){
+      axios
         .get(
           "https://cnodejs.org/api/v1/topic/" +
             this.$route.params.id +
@@ -104,8 +108,8 @@ export default {
           this.$Message.error("读取数据出错");
         });
         this.loginName = this.$store.state.loginName;
-  },
-  methods: {
+    },
+
     // fetchAuthorData
     fetchAuthorData() {
       axios
@@ -224,7 +228,7 @@ export default {
   watch: {
     authorName: "fetchAuthorData",
     $route(to, from) {
-      this.fetchPostData();
+      this.fetchPostdata();
     }
   }
 };

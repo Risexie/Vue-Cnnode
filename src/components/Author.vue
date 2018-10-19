@@ -1,8 +1,7 @@
 <template>
-<div>
     <b-container>
         <b-row>
-            <b-col md="9">
+            <b-col md="12" >
              <b-card header="个人主页" class="user">
                <b-img :src="authorMessage.avatar_url" fluid alt="Responsive image"></b-img> {{ authorMessage.loginame }}
                <p>{{ authorMessage.score}}积分</p>
@@ -25,7 +24,6 @@
             </b-col>
         </b-row>
     </b-container>
-</div>
 </template>
 
 <script>
